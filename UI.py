@@ -18,18 +18,6 @@ from cocos.scene import Scene
 import pyglet
 
 class UI:
-    class Menu(cocos.menu.Menu):
-        def __init__(self):
-            super(UI.Menu, self).__init__("Main Menu")
-
-            items = []
-            items.append(MenuItem('Quit', self.on_quit))
-
-            self.create_menu(items)
-
-        def on_quit(self):
-            pyglet.app.exit()
-
     class Canvas(cocos.draw.Canvas):
         def render(self):
             x, y = director.get_window_size()
@@ -54,6 +42,31 @@ class UI:
 
             self.add(UI.Canvas())
             self.schedule(lambda x: 0)
+class Entity():
+    import threading
+    def __init__(self, name, speed, direction):
+        self._name = name
+        self._speed = speed
+        self._direction = direction
+
+    def Start(self):
+
+    def Stop(self):
+
+    def GetLocation(self):
+
+class EntityManager():
+    def __init__(self, entityNum, speed, directions):
+        self._speed = speed
+
+        for i in range(entityNum):
+            entity = Entity(i, speed, directions[i])
+            self._entityList.append(entity)
+
+    def Start(self):
+
+    def Stop(self):
+
 
 def main():
     cocos.director.director.init(caption = "Coolest project ever")

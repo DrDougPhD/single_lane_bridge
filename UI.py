@@ -10,19 +10,20 @@ import pyglet
 from pyglet.window import key
 import threading
 
+
 class UI:
     class Canvas(cocos.draw.Canvas):
         def render(self):
             x, y = director.get_window_size()
 
             build_road_map_thingie = [
-              [[100, 400], [100, 100]],
-              [[100, 400], [200, 250]],
-              [[200, 250], [400, 250]],
-              [[400, 250], [500, 400]], 
-              [[500, 400], [500, 100]], 
-              [[500, 100], [400, 250]],
-              [[100, 100], [200, 250]]
+                [[100, 400], [100, 100]],
+                [[100, 400], [200, 250]],
+                [[200, 250], [400, 250]],
+                [[400, 250], [500, 400]],
+                [[500, 400], [500, 100]],
+                [[500, 100], [400, 250]],
+                [[100, 100], [200, 250]]
             ]
 
             for (startCoord, endCoord) in build_road_map_thingie:
@@ -42,21 +43,25 @@ class UI:
 
             self.add(UI.Canvas())
             self.schedule(lambda x: 0)
-			
-            entityList = entityManager.GetEntityList()
+
+            entityList = entityManager.get_entity_list()
 
             for entity in entityList:
-                self.add(entity._sprite)
+                self.add(entity.get_sprite())
+
 
 class Entity():
     import threading
+
     running = True
     pause = False
+
     def __init__(self, id, name, speed, direction, pos):
         self._id = id
 
+
 class Entity():
-    def __init__(self, name, speed, direction):
+    def __init__(self, name, speed, pos, direction):
         self._name = name
         self._speed = speed
         self._direction = direction
@@ -65,68 +70,60 @@ class Entity():
         self._sprite = cocos.sprite.Sprite('car.png', scale=0.10)
         self._sprite.position = 100, 100
 
-    def GetID(self):
-		return self._id
-		
-    def Start(self):
-        pass
-		
-    def Start(self):
-        pass
-		
-    def Stop(self):
-        pass
-		
-    def GetStatus(self):
+    def get_id(self):
+        return self._id
+
+    def get_status(self):
         return self._status
 
-    def Stop(self):
+    def set_speed(self, speed):
+        self._speed = speed
+
+    def request_cs(self):
         pass
 
-    def SetSpeed(self, speed):
-        self._speed = speed
-		
-    def RequestCS(self):
+    def get_location(self):
         pass
-		
-    def GetLocation(self):
+
+    def get_sprite(self):
+        return self._sprite
+
+    def start(self):
         pass
+
+    def stop(self):
+        pass
+
 
 class EntityManager():
     is_event_handler = True
 
     def __init__(self, entityNum, speed, directions):
         self._speed = speed
-        self._entityList = [ ]
+        self._entityList = []
 
         for i in range(entityNum):
-            entity = Entity(i, "belh", speed, directions[i], (0, 0))
+            entity = Entity(i, "bleh", speed, directions[i], (0, 0))
             self._entityList.append(entity)
 
-    def Start(self):
+    def start(self):
         for entity in self._entityList:
             entity.Start()
 
-    def Stop(self):
+    def stop(self):
         for entity in self._entityList:
             entity.Stop()
 
-    def GetEntityList(self):
+    def get_entity_list(self):
         return self._entityList
 
     def on_key_press(self, keyp, mod):
         if keyp in (key.SPACE):
             sprite = cocos.sprite.Sprite('start.png')
 
-    def Stop(self):
-        pass
-
-    def Stop(self):
-        pass
-
 
 def main():
-    cocos.director.director.init(caption = "Coolest project ever")
+    cocos.director.director.init(caption="Coolest project ever")
     entManage = EntityManager(2, 10, "boo")
     scene = Scene(UI.Layer(entManage))
 

@@ -54,6 +54,9 @@ class Entity():
     pause = False
     def __init__(self, id, name, speed, direction, pos):
         self._id = id
+
+class Entity():
+    def __init__(self, name, speed, direction):
         self._name = name
         self._speed = speed
         self._direction = direction
@@ -76,6 +79,9 @@ class Entity():
 		
     def GetStatus(self):
         return self._status
+
+    def Stop(self):
+        pass
 
     def SetSpeed(self, speed):
         self._speed = speed
@@ -115,12 +121,15 @@ class EntityManager():
     def Stop(self):
         pass
 
+    def Stop(self):
+        pass
+
 
 def main():
     cocos.director.director.init(caption = "Coolest project ever")
     entManage = EntityManager(2, 10, "boo")
     scene = Scene(UI.Layer(entManage))
-    scene = Scene(UI.Layer())
+
     cocos.director.director.run(scene)
 
 

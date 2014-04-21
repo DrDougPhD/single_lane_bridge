@@ -21,6 +21,22 @@ import pyglet
 from pyglet.window import key
 import threading
 
+class Key_Handler(cocos.layer.Layer):
+    is_event_handler = True
+
+    def __init__(self, entityManager):
+        super(Key_Handler, self).__init__()
+
+        self._entManager = entityManager
+
+    def on_key_press (self, keyp, modifiers):
+        if keyp == key.SPACE:
+            speed = self._entManager.get_speed() + 10
+            self._entManager.set_speed(speed)
+            print("Speed increased to: " + str(speed))
+        if keyp == key.ENTER:
+            self._entManager.start()
+            print("Starting simulation!")
 
 class Car_Status(): #You can totally tell I am a C# developer... can't you?
     Moving = 0
@@ -177,9 +193,9 @@ class Entity():
     def start(self):
         #running = True
         print("Entity " + self._name + " starting...")
-        #while self._running:
-            #self.move()
-            #self.check_for_bridge()
+        while self._running:
+            self.move()
+            self.check_for_bridge()
         return
 
     def stop(self):
@@ -187,7 +203,6 @@ class Entity():
 
 
 class EntityManager():
-    is_event_handler = True
 
     def __init__(self, entityNum, speed, directions):
         self._speed = speed
@@ -210,10 +225,11 @@ class EntityManager():
 
     def set_layer_obj(self, layer):
         self._layer = layer
+        print("Layer object set.")
 
     def set_speed(self, speed):
         self._speed = speed
-        self._layer.redraw_speed()
+        self._layer.redraw_speed(speed)
 
         for entity in self._entityList:
             entity.set_speed(speed)
@@ -229,25 +245,19 @@ class EntityManager():
             entityObj.stop()
             thread.join()
 
-    def on_key_press(self, keyp, mod):
-        if keyp in (key.SPACE):
-            speed_increase = self._speed + 10
-            print("Increasing speed to " + str(speed_increase) + "...")
-            self.set_speed(speed_increase)
-        #if keyp in (key.ENTER):
-            #print "Starting simulation..."
-            #self.start()
-
 
 def main():
     cocos.director.director.init(caption="CS 384 Project")
 
     directions = [ "left", "right" ]
     entManage = EntityManager(2, 10, directions)
+    layer = UI.Layer(entManage)
     print("Setting layer object...")
+    entManage.set_layer_obj(layer)
 
+    keyHandler = Key_Handler(entManage)
     print("Starting scene...")
-    scene = Scene(UI.Layer(entManage))
+    scene = Scene(layer, keyHandler)
     print("Running scene...")
     cocos.director.director.run(scene)
     print("Scene running!")

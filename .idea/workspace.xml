@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="515c885c-970b-4140-83d9-a13cfbd42eee" name="Default" comment="Removed Menu class&#10;Added Entity class&#10;Added Entity.__init__()&#10;  Added Entity.Start()&#10;  Added Entity.Stop()&#10;  Added Entity.GetLocation()&#10;Added EntityManager class&#10;  Added EntityManager.__init__()">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UI.py" afterPath="$PROJECT_DIR$/UI.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/single_lane_bridge.iml" afterPath="$PROJECT_DIR$/.idea/single_lane_bridge.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="single_lane_bridge.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,9 +46,10 @@
       <file leaf-file-name="UI.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/UI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="104" column="26" selection-start="3314" selection-end="3314" vertical-scroll-proportion="0.45847952" vertical-offset="1376" max-vertical-offset="4471">
+            <state line="229" column="31" selection-start="7406" selection-end="7406" vertical-scroll-proportion="0.6082949" vertical-offset="1733" max-vertical-offset="3009">
               <folding>
                 <element signature="e#174#184#0" expanded="true" />
+                <element signature="e#3248#6636#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -131,7 +129,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -156,6 +153,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -381,7 +379,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1296" height="1000" extended-state="1" />
+    <frame x="-8" y="-8" width="1296" height="1000" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -443,6 +441,7 @@
         <state line="10" column="16" selection-start="221" selection-end="221" vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="2431">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -466,6 +465,7 @@
         <state line="62" column="0" selection-start="1695" selection-end="1695" vertical-scroll-proportion="0.0" vertical-offset="1054" max-vertical-offset="2856">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -489,6 +489,7 @@
         <state line="104" column="53" selection-start="2855" selection-end="2855" vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="2142">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -512,6 +513,7 @@
         <state line="60" column="35" selection-start="1802" selection-end="1802" vertical-scroll-proportion="0.0" vertical-offset="1020" max-vertical-offset="2108">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -535,6 +537,7 @@
         <state line="60" column="35" selection-start="1802" selection-end="1802" vertical-scroll-proportion="0.0" vertical-offset="662" max-vertical-offset="2108">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -558,6 +561,7 @@
         <state line="36" column="33" selection-start="1194" selection-end="1194" vertical-scroll-proportion="0.0" vertical-offset="391" max-vertical-offset="1445">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -581,6 +585,7 @@
         <state line="67" column="19" selection-start="1906" selection-end="1906" vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="1445">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -604,6 +609,7 @@
         <state line="68" column="22" selection-start="1917" selection-end="1917" vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="1632">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -627,6 +633,7 @@
         <state line="31" column="31" selection-start="869" selection-end="869" vertical-scroll-proportion="0.0" vertical-offset="527" max-vertical-offset="782">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -650,6 +657,7 @@
         <state line="52" column="13" selection-start="1365" selection-end="1365" vertical-scroll-proportion="0.0" vertical-offset="345" max-vertical-offset="1037">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -673,6 +681,7 @@
         <state line="19" column="50" selection-start="459" selection-end="459" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="799">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -696,6 +705,7 @@
         <state line="19" column="50" selection-start="459" selection-end="459" vertical-scroll-proportion="0.0" vertical-offset="84" max-vertical-offset="952">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -719,6 +729,7 @@
         <state line="19" column="50" selection-start="459" selection-end="459" vertical-scroll-proportion="0.0" vertical-offset="323" max-vertical-offset="952">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -742,6 +753,7 @@
         <state line="5" column="25" selection-start="126" selection-end="126" vertical-scroll-proportion="0.0" vertical-offset="85" max-vertical-offset="935">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -765,6 +777,7 @@
         <state line="8" column="0" selection-start="146" selection-end="146" vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="884">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -802,9 +815,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/UI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="104" column="26" selection-start="3314" selection-end="3314" vertical-scroll-proportion="0.45847952" vertical-offset="1376" max-vertical-offset="4471">
+        <state line="229" column="31" selection-start="7406" selection-end="7406" vertical-scroll-proportion="0.6082949" vertical-offset="1733" max-vertical-offset="3009">
           <folding>
             <element signature="e#174#184#0" expanded="true" />
+            <element signature="e#3248#6636#0" expanded="false" />
           </folding>
         </state>
       </provider>

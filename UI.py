@@ -11,7 +11,7 @@
 import sys
 import os
 
-import cocos, math, time
+import cocos, math, time, random
 from cocos.director import director
 from cocos.menu import MenuItem
 from cocos.draw import Line
@@ -31,7 +31,7 @@ class Car_Status(): #You can totally tell I am a C# developer... can't you?
 class UI:
     class Canvas(cocos.draw.Canvas):
         def render(self):
-            print "Creating canvas..."
+            print("Creating canvas...")
             x, y = director.get_window_size()
 
             roadmap = [
@@ -53,48 +53,46 @@ class UI:
                 self.set_stroke_width(width)
                 self.move_to(start)
                 self.line_to(end)
-            print "Road map drawn!"
+            print("Road map drawn!")
 
     class Layer(cocos.layer.Layer):
         def __init__(self, entityManager):
             super(UI.Layer, self).__init__()
 
-            print "Creating layer..."
+            print("Creating layer...")
 
             self.add(UI.Canvas())
             self.schedule(lambda x: 0)
-            print "Canvas added!"
+            print("Canvas added!")
 
-            print "Adding entities..."
+            print("Adding entities...")
             entityList = entityManager.get_entity_list()
             for entity in entityList:
                 self.add(entity.get_sprite())
-                print "Entity " + entity.get_name() + " added!"
+                print("Entity " + entity.get_name() + " added!")
 
-            print "Creating assorted UI elements..."
+            print("Creating assorted UI elements...")
             speedLabel = cocos.text.Label("Speed: ", position=(545, 450),
                                           color=(200, 200, 200, 200))
             self._speedText = cocos.text.Label(str(entityManager.get_speed()), position=(600, 450),
                                                color=(200, 200, 200, 200))
-            print "Adding assorted UI elements..."
+            print("Adding assorted UI elements...")
             self.add(speedLabel)
             self.add(self._speedText)
 
-            print "Layer created!"
+            print("Layer created!")
 
         def redraw_speed(self, speed):
-            print "Redrawing speed..."
+            print("Redrawing speed...")
             self._speedText.element.text = str(speed)
 
 
 class Entity():
-    def __init__(self, name, speed, pos, direction):
-        print "Initializing entity " + name + "..."
-        import random
+    def __init__(self, name, speed, direction):
+        print("Initializing entity " + name + "...")
         random_road = 3
-        while random_road != 3: #"Bridge" is road 3 and no one can start there
+        while random_road == 3: #"Bridge" is road 3 and no one can start there
             random_road = random.randrange(0, 6)
-        del random
         self._current_road = random_road
         self._timestamp = -1
         self._name = name
@@ -102,7 +100,7 @@ class Entity():
         self._direction = direction
         self._status = Car_Status.Moving
         self._sprite = cocos.sprite.Sprite('car.png', scale=0.10)
-        self._position = pos
+        self._position = 0
         self._running = False
         self._road_map = [
                 [[100, 100], [200, 250]],
@@ -113,7 +111,8 @@ class Entity():
                 [[500, 400], [500, 100]],
                 [[500, 100], [400, 250]],
             ]
-        print "Entity " + name + " initialized!"
+        self._sprite.position = self._road_map[self._current_road][0]
+        print("Entity " + name + " initialized!")
 
     def get_name(self):
         return self._name
@@ -177,11 +176,11 @@ class Entity():
 
     def start(self):
         #running = True
-        print "Entity " + self._name + " starting..."
-        while self._running:
-            self.move()
-            self.check_for_bridge()
-        pass
+        print("Entity " + self._name + " starting...")
+        #while self._running:
+            #self.move()
+            #self.check_for_bridge()
+        return
 
     def stop(self):
         pass
@@ -197,11 +196,11 @@ class EntityManager():
         self._layer = None
 
         for i in range(entityNum):
-            entity = Entity("bleh", speed, (100, 100), directions[i])
-            entityThread = threading.Thread(None, entity.start(), "Entity" + str(i))
+            entity = Entity("bleh", speed, directions[i])
+            #entityThread = threading.Thread(None, entity.start(), "Entity" + str(i))
             self._entityList.append(entity)
-            self._threadList.append(entityThread)
-            print "Entity " + str(i) + " added!"
+            #self._threadList.append(entityThread)
+            print("Entity " + str(i) + " added!")
 
     def get_entity_list(self):
         return self._entityList
@@ -233,11 +232,11 @@ class EntityManager():
     def on_key_press(self, keyp, mod):
         if keyp in (key.SPACE):
             speed_increase = self._speed + 10
-            print "Increasing speed to " + str(speed_increase) + "..."
+            print("Increasing speed to " + str(speed_increase) + "...")
             self.set_speed(speed_increase)
-        if keyp in (key.ENTER):
-            print "Starting simulation..."
-            self.start()
+        #if keyp in (key.ENTER):
+            #print "Starting simulation..."
+            #self.start()
 
 
 def main():
@@ -245,15 +244,13 @@ def main():
 
     directions = [ "left", "right" ]
     entManage = EntityManager(2, 10, directions)
-    layer = UI.Layer(entManage)
-    print "Setting layer object..."
-    entManage.set_layer_obj(layer)
+    print("Setting layer object...")
 
-    print "Starting scene..."
-    scene = Scene(layer)
-    print "Running scene..."
+    print("Starting scene...")
+    scene = Scene(UI.Layer(entManage))
+    print("Running scene...")
     cocos.director.director.run(scene)
-    print "Scene running!"
+    print("Scene running!")
 
 
 if __name__ == "__main__":

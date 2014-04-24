@@ -31,7 +31,7 @@ class Key_Handler(cocos.layer.Layer):
 
     def on_key_press(self, keyp, modifiers):
         if keyp == key.SPACE:
-            speed = self._entManager.get_speed() + 10
+            speed = self._entManager.speed + 10
             self._entManager.set_speed(speed)
             print("Speed increased to: " + str(speed))
         if keyp == key.ENTER:
@@ -92,7 +92,7 @@ class UI:
             print("Canvas added!")
 
             print("Adding entities...")
-            entityList = entityManager.get_entity_list()
+            entityList = entityManager.entityList
             for entity in entityList:
                 self.add(entity.get_sprite())
                 print("Entity " + entity.get_name() + " added!")
@@ -100,13 +100,19 @@ class UI:
             print("Creating assorted UI elements...")
             speedLabel = cocos.text.Label("Speed: ", position=(545, 450),
                                           color=(200, 200, 200, 200))
-            self._speedText = cocos.text.Label(str(entityManager.get_speed()), position=(600, 450),
+            self._speedText = cocos.text.Label(str(entityManager.speed), position=(600, 450),
                                                color=(200, 200, 200, 200))
             print("Adding assorted UI elements...")
             self.add(speedLabel)
             self.add(self._speedText)
 
             print("Layer created!")
+
+            # Since we have the entity manager, let's also set it's layer
+            #  pointer to us.
+            print("Setting layer object...")
+            entityManager.layer = self
+
 
         def redraw_speed(self, speed):
             print("Redrawing speed...")
@@ -207,33 +213,24 @@ class Entity():
 class EntityManager():
 
     def __init__(self, entityNum, speed, directions):
-        self._speed = speed
-        self._entityList = []
+        self.speed = speed
+        self.entityList = []
         self._threadList = []
-        self._layer = None
+        self.layer = None
 
         for i in range(entityNum):
             entity = Entity("bleh", speed, directions[i])
             #entityThread = threading.Thread(None, entity.start(), "Entity" + str(i))
-            self._entityList.append(entity)
+            self.entityList.append(entity)
             #self._threadList.append(entityThread)
             print("Entity " + str(i) + " added!")
 
-    def get_entity_list(self):
-        return self._entityList
-
-    def get_speed(self):
-        return self._speed
-
-    def set_layer_obj(self, layer):
-        self._layer = layer
-        print("Layer object set.")
 
     def set_speed(self, speed):
-        self._speed = speed
-        self._layer.redraw_speed(speed)
+        self.speed = speed
+        self.layer.redraw_speed(speed)
 
-        for entity in self._entityList:
+        for entity in self.entityList:
             entity.set_speed(speed)
 
     def start(self):
@@ -243,7 +240,7 @@ class EntityManager():
     def stop(self):  #This may not even be needed...
         for thread in self._threadList:
             index = self._threadList.index(thread)
-            entityObj = self._entityList[index]
+            entityObj = self.entityList[index]
             entityObj.stop()
             thread.join()
 
@@ -255,8 +252,6 @@ def main():
     directions = [ "left", "right" ]
     entManage = EntityManager(2, 10, directions)
     layer = UI.Layer(entManage)
-    print("Setting layer object...")
-    entManage.set_layer_obj(layer)
 
     keyHandler = Key_Handler(entManage)
     print("Starting scene...")

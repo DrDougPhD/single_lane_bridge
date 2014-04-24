@@ -8,7 +8,7 @@
 #   Speed is Units per Tick
 #   Speed limit is 200 upt
 
-import random, cocos, time, math
+import random, cocos, time, math, threading
 from cocos.actions import MoveTo, Rotate
 
 
@@ -18,8 +18,9 @@ class Car_Status(): #You can totally tell I am a C# developer... can't you?
     Warning = 2
     On_Bridge = 3
 
-class Entity():
+class Entity(threading.Thread):
     def __init__(self, name, speed, direction):
+        threading.Thread.__init__(self)
         print("Initializing entity " + name + "...")
         random_road = 3
         while random_road == 3: #"Bridge" is road 3 and no one can start there
@@ -75,7 +76,7 @@ class Entity():
             #upcomingRoad = (self._current_road + 1) % 3 #(Number of roads - 1) / 2
         #if self._direction == "right":
             #upcomingRoad = (self._current_road - 1) % 3 #(Number of roads - 1) / 2
-
+        print("Moving...")
         if self._position > 1 and self._status != Car_Status.Warning: #If the road has been traveled and not on road 2 or 6
             self._current_road += 1 #Go to the next road
             self._position = 0 #Start over
@@ -84,19 +85,20 @@ class Entity():
                 self._status = Car_Status.Waiting
                 self.create_timestamp() #Fairness should be assured doing it this way,
                                         #assuming system threading is fair, I guess?
-
+        print("C")
         current_road_start_loc = self._road_map[self._current_road][0]
         current_road_end_loc = self._road_map[self._current_road][1]
-        loc = self.get_location()
 
         road_length = math.sqrt(math.pow((current_road_end_loc[0] - current_road_start_loc[0]), 2) +
                                math.pow((current_road_end_loc[1] - current_road_start_loc[1]), 2))
 
+        self._position = 1.0 / road_length #Step size
+
         self._sprite.do(
             MoveTo(
                     (
-                        (loc[0] + ((current_road_end_loc[0] - current_road_start_loc[0]) * (self._position[0] * self._speed))),
-                        (loc[1] + ((current_road_end_loc[1] - current_road_start_loc[1]) * (self._position[1] * self._speed)))
+                        (current_road_start_loc[0] + ((current_road_end_loc[0] - current_road_start_loc[0]) * self._position)),
+                        (current_road_start_loc[1] + ((current_road_end_loc[1] - current_road_start_loc[1]) * self._position))
                     ), 1)
         )
 
@@ -110,16 +112,16 @@ class Entity():
             self._status = Car_Status.Warning
             return True
 
-    def start(self):
+    def run(self):
         print("Setting run to True")
         self._running = True
-
-    def main_thread(self):
         print("Entity " + self._name + " starting...")
         while self._running:
             print("Entity " + self._name + " running!")
             while self._status != Car_Status.Waiting:
-                print("Moving!")
                 self.move()
                 self.check_for_bridge()
+                sleep_time = 10 - (self._speed / 60)
+                print("Sleeping for " + str(sleep_time))
+                time.sleep(sleep_time)
         return

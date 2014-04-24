@@ -9,7 +9,7 @@
 #   Speed limit is 200 upt
 
 from Entity import Entity
-import random, sys, threading, operator
+import random, sys, threading, operator, time
 
 class Bridge_Mode():
     One_at_a_Time = 0
@@ -29,9 +29,7 @@ class EntityManager():
         for i in range(entityNum):
             randomCar = random.randint(len(carNameList), sys.maxint) % len(carNameList)
             entity = Entity(carNameList[randomCar], speed, directions[i])
-            entityThread = threading.Thread(None, entity.main_thread(), "Entity" + str(i))
             self._entityList.append(entity)
-            self._threadList.append(entityThread)
             print("Entity " + str(i) + " added!")
 
     def get_entity_list(self):
@@ -60,11 +58,9 @@ class EntityManager():
         for entity in self._entityList:
             entity.start()
 
-        for thread in self._threadList:
-            thread.start()
-
         timeStampList = []
         while self._running:
+            print("Runn")
             for entity in self._entityList:
                 if entity.get_status() == "Waiting":
                     timeStampList.append([entity, entity.get_timestamp()])
@@ -72,6 +68,7 @@ class EntityManager():
             if len(timeStampList) > 0:
                 timeStampList.sort(key=operator.itemgetter(2)) #Sort by timestamp / 2nd column
                 print("Oldest timestamp: " + str(timeStampList[0][1]) + " from " + timeStampList[0][0])
+            time.sleep(10)
 
     def stop(self):  #This may not even be needed...
         for thread in self._threadList:

@@ -39,32 +39,42 @@ class Key_Handler(cocos.layer.Layer):
             print("Starting simulation!")
 
 class Car_Status(): #You can totally tell I am a C# developer... can't you?
-    Moving = 0
+    Moving = 0      # That's how I would have done it :P
     Waiting = 1
     Warning = 2
     On_Bridge = 3
+
+
+class RoadPoints:
+  NW = 100, 100
+  SW = 100, 400
+  NE = 500, 100
+  SE = 500, 400
+  
+  # Intersections of the road with the bridge.
+  WEST_BRIDGE_ENTRY = 200, 250
+  EAST_BRIDGE_ENTRY = 400, 250
+
+  ROADMAP = [
+    [NW, WEST_BRIDGE_ENTRY],
+    [NW, SW],
+    [SW, WEST_BRIDGE_ENTRY],
+    [WEST_BRIDGE_ENTRY, EAST_BRIDGE_ENTRY],
+    [EAST_BRIDGE_ENTRY, SE],
+    [SE, NE],
+    [NE, EAST_BRIDGE_ENTRY],
+  ]
+
 
 class UI:
     class Canvas(cocos.draw.Canvas):
         def render(self):
             print("Creating canvas...")
             x, y = director.get_window_size()
+            color = 255, 255, 255, 255
+            width = 3
 
-            roadmap = [
-                [[100, 100], [200, 250]],
-                [[100, 100], [100, 400]],
-                [[100, 400], [200, 250]],
-                [[200, 250], [400, 250]],
-                [[400, 250], [500, 400]],
-                [[500, 400], [500, 100]],
-                [[500, 100], [400, 250]],
-            ]
-
-            for (startCoord, endCoord) in roadmap:
-                start = startCoord[0], startCoord[1]
-                end = endCoord[0], endCoord[1]
-                color = 255, 255, 255, 255
-                width = 3
+            for start, end in RoadPoints.ROADMAP:
                 self.set_color(color)
                 self.set_stroke_width(width)
                 self.move_to(start)

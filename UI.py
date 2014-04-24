@@ -128,15 +128,7 @@ class Entity():
         self._sprite = cocos.sprite.Sprite('car.png', scale=0.10)
         self._position = 0
         self._running = False
-        self._road_map = [
-                [[100, 100], [200, 250]],
-                [[100, 100], [100, 400]],
-                [[100, 400], [200, 250]],
-                [[200, 250], [400, 250]],
-                [[400, 250], [500, 400]],
-                [[500, 400], [500, 100]],
-                [[500, 100], [400, 250]],
-            ]
+        self._road_map = RoadPoints.ROADMAP
         self._sprite.position = self._road_map[self._current_road][0]
         print("Entity " + name + " initialized!")
 

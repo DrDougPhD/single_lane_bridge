@@ -119,7 +119,7 @@ class UI:
             self._speedText.element.text = str(speed)
 
 
-class Entity():
+class Vehicle:
     def __init__(self, name, speed, direction):
         print("Initializing entity " + name + "...")
         random_road = 3
@@ -210,7 +210,7 @@ class Entity():
         pass
 
 
-class EntityManager():
+class VehicleManager():
 
     def __init__(self, entityNum, speed, directions):
         self.speed = speed
@@ -218,8 +218,12 @@ class EntityManager():
         self._threadList = []
         self.layer = None
 
-        for i in range(entityNum):
-            entity = Entity("bleh", speed, directions[i])
+        self.init_vehicles(n=entityNum, speed=speed, directions=directions)
+
+
+    def init_vehicles(self, n, speed, directions):
+        for i in range(n):
+            entity = Vehicle("bleh", speed, directions[i])
             #entityThread = threading.Thread(None, entity.start(), "Entity" + str(i))
             self.entityList.append(entity)
             #self._threadList.append(entityThread)
@@ -250,7 +254,7 @@ def main():
     director.init(caption="CS 384 Project")
 
     directions = [ "left", "right" ]
-    entManage = EntityManager(2, 10, directions)
+    entManage = VehicleManager(2, 10, directions)
     layer = UI.Layer(entManage)
 
     keyHandler = Key_Handler(entManage)

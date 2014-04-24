@@ -29,7 +29,7 @@ class Key_Handler(cocos.layer.Layer):
 
         self._entManager = entityManager
 
-    def on_key_press (self, keyp, modifiers):
+    def on_key_press(self, keyp, modifiers):
         if keyp == key.SPACE:
             speed = self._entManager.get_speed() + 10
             self._entManager.set_speed(speed)
@@ -245,9 +245,10 @@ class EntityManager():
             entityObj.stop()
             thread.join()
 
+from cocos.director import director
 
 def main():
-    cocos.director.director.init(caption="CS 384 Project")
+    director.init(caption="CS 384 Project")
 
     directions = [ "left", "right" ]
     entManage = EntityManager(2, 10, directions)
@@ -259,9 +260,11 @@ def main():
     print("Starting scene...")
     scene = Scene(layer, keyHandler)
     print("Running scene...")
-    cocos.director.director.run(scene)
-    print("Scene running!")
-
+    director.run(scene)
+    print("Goodbye!")
 
 if __name__ == "__main__":
+    # If you run this python script from the command line, then this
+    #  if-statement will evaluate to true, in which the main() function
+    #  will be executed.
     main()

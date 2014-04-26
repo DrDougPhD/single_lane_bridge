@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="515c885c-970b-4140-83d9-a13cfbd42eee" name="Default" comment="Removed Menu class&#10;Added Entity class&#10;Added Entity.__init__()&#10;  Added Entity.Start()&#10;  Added Entity.Stop()&#10;  Added Entity.GetLocation()&#10;Added EntityManager class&#10;  Added EntityManager.__init__()">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Entity.py" afterPath="$PROJECT_DIR$/Entity.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/EntityManager.py" afterPath="$PROJECT_DIR$/EntityManager.py" />
+      <change type="MOVED" beforePath="C:\Users\Madeline\Dropbox\Projects\Projects\Python\single_lane_bridge\Entity.py" afterPath="$PROJECT_DIR$/Vehicle.py" />
+      <change type="MOVED" beforePath="C:\Users\Madeline\Dropbox\Projects\Projects\Python\single_lane_bridge\EntityManager.py" afterPath="$PROJECT_DIR$/VehicleManager.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UI.py" afterPath="$PROJECT_DIR$/UI.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="single_lane_bridge.iws" />
@@ -48,16 +49,16 @@
       <file leaf-file-name="UI.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/UI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="96" column="31" selection-start="3198" selection-end="3198" vertical-scroll-proportion="0.0" vertical-offset="1013" max-vertical-offset="1921">
+            <state line="101" column="40" selection-start="3095" selection-end="3095" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2176">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Entity.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Entity.py">
+      <file leaf-file-name="Vehicle.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Vehicle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="112" column="23" selection-start="4103" selection-end="4103" vertical-scroll-proportion="0.0" vertical-offset="1315" max-vertical-offset="2244">
+            <state line="83" column="23" selection-start="3407" selection-end="3407" vertical-scroll-proportion="0.97926265" vertical-offset="561" max-vertical-offset="1751">
               <folding>
                 <element signature="e#178#221#0" expanded="true" />
               </folding>
@@ -65,12 +66,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EntityManager.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/EntityManager.py">
+      <file leaf-file-name="VehicleManager.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/VehicleManager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="0" selection-start="1227" selection-end="1227" vertical-scroll-proportion="0.13876653" vertical-offset="537" max-vertical-offset="1445">
+            <state line="40" column="0" selection-start="1288" selection-end="1288" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1224">
               <folding>
-                <element signature="e#185#210#0" expanded="true" />
+                <element signature="e#185#211#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -98,17 +99,19 @@
         <option value="$PROJECT_DIR$/UI/Main.py" />
         <option value="$USER_HOME$/.PyCharm30/system/python_stubs/1584508244/__builtin__.py" />
         <option value="$PROJECT_DIR$/Test.py" />
-        <option value="$PROJECT_DIR$/UI.py" />
         <option value="$PROJECT_DIR$/Entity.py" />
         <option value="$PROJECT_DIR$/EntityManager.py" />
+        <option value="$PROJECT_DIR$/VehicleManager.py" />
+        <option value="$PROJECT_DIR$/Vehicle.py" />
+        <option value="$PROJECT_DIR$/UI.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1288" />
+    <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1296" />
-    <option name="height" value="1040" />
+    <option name="height" value="1000" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -181,7 +184,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="F:/Python27/python.exe" />
-    <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonSdkConfigurable" />
+    <property name="options.lastSelected" value="preferences.sourceCode.Python" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -402,14 +405,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1288" y="-8" width="1296" height="1040" extended-state="7" />
+    <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.146875" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39932886" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.1953125" order="7" side_tool="true" content_ui="tabs" />
@@ -417,12 +420,12 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32997763" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32997763" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -777,27 +780,27 @@
         <state line="446" column="0" selection-start="14607" selection-end="14607" vertical-scroll-proportion="0.0" vertical-offset="7255" max-vertical-offset="84235" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/UI.py">
+    <entry file="file://$PROJECT_DIR$/VehicleManager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="96" column="31" selection-start="3198" selection-end="3198" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2023">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Entity.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="112" column="23" selection-start="4103" selection-end="4103" vertical-scroll-proportion="0.0" vertical-offset="1315" max-vertical-offset="2244">
+        <state line="40" column="0" selection-start="1288" selection-end="1288" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1224">
           <folding>
-            <element signature="e#178#221#0" expanded="true" />
+            <element signature="e#185#211#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EntityManager.py">
+    <entry file="file://$PROJECT_DIR$/UI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="39" column="0" selection-start="1227" selection-end="1227" vertical-scroll-proportion="0.13876653" vertical-offset="537" max-vertical-offset="1445">
+        <state line="101" column="40" selection-start="3095" selection-end="3095" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2176">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Vehicle.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="83" column="23" selection-start="3407" selection-end="3407" vertical-scroll-proportion="0.97926265" vertical-offset="561" max-vertical-offset="1751">
           <folding>
-            <element signature="e#185#210#0" expanded="true" />
+            <element signature="e#178#221#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -31,7 +31,7 @@ class Vehicle():
         self.speed = speed
         self.direction = direction
         self.status = Car_Status.Moving
-        self.sprite = cocos.sprite.Sprite('car.png', scale=0.10)
+        self.sprite = cocos.sprite.Sprite('car2.png', scale=0.10, color=(random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)))
         if self.current_road % 2 == 0:
             mod = 0
             if self.current_road == 0 or self.current_road == 4:

@@ -24,12 +24,8 @@ class VehicleManager():
         self.bridge_mode = mode
         self.running = False
 
-        #These really need to be more meaningful eventually...
-        carNameList = [ "Scion", "Toyota", "Ford", "Lamborgini", "Tesla", "Mercedes", "Mazda", "Chevrolet", "BMW",
-                        "Porsche", "Audi", "Volkswagen", "Maserati", "Ferrari", "Subaru", "Lexus", "Honda", "Acura" ]
         for i in range(entityNum):
-            randomCar = random.randint(len(carNameList), sys.maxint) % len(carNameList)
-            vehicle = Vehicle(carNameList[randomCar], speed, directions[i])
+            vehicle = Vehicle(str(i), speed, directions[i])
             self.vehicleList.append(vehicle)
             print("Vehicle " + str(i) + " added!")
 
@@ -42,12 +38,11 @@ class VehicleManager():
 
     def add_vehicle(self, direction):
         #These really need to be more meaningful eventually...
-        carNameList = [ "Scion", "Toyota", "Ford", "Lamborgini", "Tesla", "Mercedes", "Mazda", "Chevrolet", "BMW",
-                        "Porsche", "Audi", "Volkswagen", "Maserati", "Ferrari", "Subaru", "Lexus", "Honda", "Acura" ]
-        randomCar = random.randint(len(carNameList), sys.maxint) % len(carNameList)
-        vehicle = Vehicle(carNameList[randomCar], self.speed, direction)
+        vehicle = Vehicle(str(len(self.vehicleList)), self.speed, direction)
         self.vehicleList.append(vehicle)
         self.layer.add_vehicle(vehicle)
+        self.layer.create_speed_label(vehicle=vehicle)
+        self.layer.create_vehicle_label(vehicle=vehicle)
 
     def start_round_robin(self):
         self.running = True

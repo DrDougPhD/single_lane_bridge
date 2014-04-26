@@ -20,14 +20,14 @@ class Car_Status(): #You can totally tell I am a C# developer... can't you?
     On_Bridge = 3
 
 class Vehicle():
-    def __init__(self, name, speed, direction):
-        print("Initializing entity " + name + "...")
+    def __init__(self, index, speed, direction):
+        print("Initializing vehicle " + str(index) + "...")
         random_road = 3
         while random_road == 3: #"Bridge" is road 3 and no one can start there
             random_road = random.randrange(0, 6)
         self.current_road = random_road
         self.timestamp = -1
-        self.name = name
+        self.index = index
         self.speed = speed
         self.direction = direction
         self.status = Car_Status.Moving
@@ -52,8 +52,8 @@ class Vehicle():
         self.running = False
         self.road_map = RoadPoints.ROADMAP
         self.sprite.position = self.road_map[self.current_road][0]
-        self.speed_label = None
-        print("Vehicle " + name + " initialized!")
+        self.label = None
+        print("Vehicle " + str(index) + " initialized!")
 
     def create_timestamp(self):
         self.timestamp = time.time()
@@ -96,9 +96,7 @@ class Vehicle():
                                math.pow((current_road_end_loc[1] - current_road_start_loc[1]), 2))
 
         self.position += 1.0 / road_length #Step size
-        print(str(self.position))
-        print(str(((current_road_start_loc[0] + ((current_road_end_loc[0] - current_road_start_loc[0]) * self.position)),
-                (current_road_start_loc[1] + ((current_road_end_loc[1] - current_road_start_loc[1]) * self.position)))))
+
         self.sprite.do(
             MoveTo(
                     (
@@ -106,6 +104,9 @@ class Vehicle():
                         (current_road_start_loc[1] + ((current_road_end_loc[1] - current_road_start_loc[1]) * self.position))
                     ), 0)
         )
+
+        self.label.position = ((current_road_start_loc[0] + ((current_road_end_loc[0] - current_road_start_loc[0]) * self.position)),
+                        (current_road_start_loc[1] + ((current_road_end_loc[1] - current_road_start_loc[1]) * self.position)))
 
     def check_for_bridge(self):
         print("Checking if " + self.name + " is near the bridge!")

@@ -57,8 +57,9 @@ class UI:
             super(UI.Layer, self).__init__()
 
             self.label_pos_y = 450
-            self.label_step = 15
+            self.label_step = 20
             self.label_color = (255, 255, 255, 255)
+            self._vehManage = vehicleManager
 
             print("Creating layer...")
 
@@ -69,7 +70,7 @@ class UI:
             print("Adding vehicles...")
             for vehicle in vehicleManager.vehicleList:
                 self.add(vehicle.sprite)
-                print("Vehicle " + vehicle.name + " added!")
+                print("Vehicle " + str(vehicle.index) + " added!")
 
             print("Layer created!")
 
@@ -79,7 +80,6 @@ class UI:
 
         def create_speed_label(self, vehicle=None, vehManage=None):
             to_create_list = []
-
             if vehManage is not None:
                 for vehicle in vehManage.vehicleList:
                     to_create_list.append(vehicle)
@@ -87,25 +87,35 @@ class UI:
                 to_create_list.append(vehicle)
 
             for vehicle in to_create_list:
-                print("Creating speed label for " + vehicle.name + "...")
-                if len(vehicle.name) > 4:
-                    x = 495 - (len(vehicle.name) * 3)
-                else:
-                    x = 495
-                speedLabel = cocos.text.Label(vehicle.name + "'s speed: ", position=(x, self.label_pos_y),
+                print("Creating speed label for vehicle" + str(vehicle.index) + "...")
+                speedLabel = cocos.text.Label("Vehicle " + str(vehicle.index) + "'s speed: ", position=(460, self.label_pos_y),
                                           color=self.label_color)
                 speedText = cocos.text.Label(str(vehicle.speed), position=(600, self.label_pos_y),
                                                color=self.label_color)
                 self.add(speedLabel)
                 self.add(speedText)
 
-                self.label_pos_y += self.label_step
+                self.label_pos_y -= self.label_step
 
                 vehicle.speed_label = speedText
 
+        def create_vehicle_label(self, vehicle=None, vehManage=None):
+            to_create_list = []
+            if vehManage is not None:
+                for vehicle in vehManage.vehicleList:
+                    to_create_list.append(vehicle)
+            else:
+                to_create_list.append(vehicle)
+
+            for vehicle in to_create_list:
+                index = self._vehManage.vehicleList.index(vehicle)
+                vehicleLabel = cocos.text.Label(str(index), position=vehicle.sprite.position, color=self.label_color)
+                vehicle.label = vehicleLabel
+                self.add(vehicleLabel)
+
         def add_vehicle(self, vehicle):
             self.add(vehicle.sprite)
-            print("Vehicle " + vehicle.name + " added!")
+            print("Vehicle " + str(vehicle.index) + " added!")
 
     class Key_Handler(cocos.layer.Layer):
         is_event_handler = True
@@ -119,8 +129,8 @@ class UI:
                 self._modifier = 1
             if keyp == key.NUM_SUBTRACT:
                 self._modifier = -1
-            if (keyp >= 65457 and keyp <= 65465): #Numpad 1 - 9
-                index = keyp - 65457
+            if (keyp >= 65456 and keyp <= 65465): #Numpad 1 - 9
+                index = keyp - 65456
                 if self._modifier != None:
                     new_speed = self.vehManage.vehicleList[index].speed + (10 * self._modifier)
                     self.vehManage.vehicleList[index].speed = new_speed
@@ -130,8 +140,9 @@ class UI:
                 for vehicle in self.vehManage.vehicleList:
                     vehicle.move()
             if keyp == key.F1:
-                print("Adding new car...")
-                self.vehManage.add_vehicle("left")
+                if len(self.vehManage) < 9:
+                    print("Adding new car...")
+                    self.vehManage.add_vehicle("left")
             if keyp == key.SPACE:
                 self.vehManage.bridge_mode = ~self.vehManage.bridge_mode + 1 #Complement + 1
 
@@ -145,6 +156,7 @@ def main():
     print("Setting layer object...")
     vehManage.layer = layer
     layer.create_speed_label(vehManage=vehManage)
+    layer.create_vehicle_label(vehManage=vehManage)
     keyHandler = UI.Key_Handler(vehManage)
 
     color_layer = cocos.layer.ColorLayer(0,104,10, 0)

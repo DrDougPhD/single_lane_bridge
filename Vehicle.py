@@ -109,12 +109,12 @@ class Vehicle():
                         (current_road_start_loc[1] + ((current_road_end_loc[1] - current_road_start_loc[1]) * self.position)))
 
     def check_for_bridge(self):
-        print("Checking if " + self.name + " is near the bridge!")
+        print("Checking if vehicle " + str(self.index) + " is near the bridge!")
         if self.status == Car_Status.Waiting:
-            print(self.name + " is waiting at the bridge!")
+            print("Vehicle " + str(self.index) + " is waiting at the bridge!")
             #return self.handle_cs()
         if ((self.current_road == 2) or (self.current_road == 6) and self.status != Car_Status.Warning):
-            print(self.name + " is near the bridge!")
+            print("Vehicle " + str(self.index) + " is near the bridge!")
             self.status = Car_Status.Warning
             return True
 

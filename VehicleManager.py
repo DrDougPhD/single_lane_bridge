@@ -15,8 +15,9 @@ class Bridge_Mode():
     One_at_a_Time = -1
     One_direction = 1
 
-class VehicleManager():
+class VehicleManager(threading.Thread):
     def __init__(self, entityNum, speed, directions, mode):
+        threading.Thread.__init__(self)
         self.speed = speed
         self.vehicleList = []
         self.threadList = []
@@ -44,13 +45,13 @@ class VehicleManager():
         self.layer.create_speed_label(vehicle=vehicle)
         self.layer.create_vehicle_label(vehicle=vehicle)
 
-    def start_round_robin(self):
+    def run(self):
         self.running = True
 
         timeStampList = []
         while self.running:
             for vehicle in self.vehicleList:
-                print("Entity " + vehicle.name + " running!")
+                print("Vehicle " + (vehicle.index) + " running!")
                 if vehicle.status != Car_Status.Waiting:
                     vehicle.move()
                     vehicle.check_for_bridge()
@@ -63,9 +64,9 @@ class VehicleManager():
                 timeStampList.sort(key=operator.itemgetter(2)) #Sort by timestamp / 2nd column
                 print("Oldest timestamp: " + str(timeStampList[0][1]) + " from " + timeStampList[0][0])
 
-            sleep_time = 10 - (self.speed / 60)
+            sleep_time = 5 - (self.speed / 5)
             print("Sleeping for " + str(sleep_time))
-            time.sleep(sleep_time) #Yield
+            time.sleep(sleep_time)
 
     def start_threaded(self):
         self.running = True

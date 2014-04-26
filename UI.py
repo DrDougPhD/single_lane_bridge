@@ -137,10 +137,11 @@ class UI:
                     self.vehManage.layer.redraw_speed(vehicle=self.vehManage.vehicleList[index])
             if keyp == key.ENTER:
                 print("Starting simulation...")
+                self.vehManage.start()
                 for vehicle in self.vehManage.vehicleList:
                     vehicle.move()
             if keyp == key.F1:
-                if len(self.vehManage) < 9:
+                if len(self.vehManage.vehicleList) < 9:
                     print("Adding new car...")
                     self.vehManage.add_vehicle("left")
             if keyp == key.SPACE:
@@ -163,7 +164,9 @@ def main():
     print("Starting scene...")
     scene = Scene(keyHandler, color_layer, layer)
     print("Running scene...")
-    cocos.director.director.run(scene)
+    UIThread = threading.Thread(group=None,target=cocos.director.director.run(scene))
+    UIThread.start()
+    UIThread.run()
     print("Scene running!")
     print("Goodbye!")
 

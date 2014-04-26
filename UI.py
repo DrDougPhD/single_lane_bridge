@@ -97,7 +97,8 @@ class UI:
                 self.vehManage.set_speed(speed_increase)
             if keyp == key.ENTER:
                 print("Starting simulation...")
-                self.vehManage.start_round_robin()
+                for vehicle in self.vehManage.vehicleList:
+                    vehicle.move()
 
 
 def main():

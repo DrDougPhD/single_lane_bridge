@@ -47,7 +47,7 @@ class Vehicle():
         #if self._direction == "right":
             #upcomingRoad = (self._current_road - 1) % 3 #(Number of roads - 1) / 2
         print("Moving...")
-        if self.position > 1 and self._status != Car_Status.Warning: #If the road has been traveled and not on road 2 or 6
+        if self.position > 1 and self.status != Car_Status.Warning: #If the road has been traveled and not on road 2 or 6
             self.current_road += 1 #Go to the next road
             self.position = 0 #Start over
         else:
@@ -62,14 +62,16 @@ class Vehicle():
         road_length = math.sqrt(math.pow((current_road_end_loc[0] - current_road_start_loc[0]), 2) +
                                math.pow((current_road_end_loc[1] - current_road_start_loc[1]), 2))
 
-        self.position = 1.0 / road_length #Step size
-
+        self.position += 1.0 / road_length #Step size
+        print(str(self.position))
+        print(str(((current_road_start_loc[0] + ((current_road_end_loc[0] - current_road_start_loc[0]) * self.position)),
+                (current_road_start_loc[1] + ((current_road_end_loc[1] - current_road_start_loc[1]) * self.position)))))
         self.sprite.do(
             MoveTo(
                     (
                         (current_road_start_loc[0] + ((current_road_end_loc[0] - current_road_start_loc[0]) * self.position)),
                         (current_road_start_loc[1] + ((current_road_end_loc[1] - current_road_start_loc[1]) * self.position))
-                    ), 1)
+                    ), 0)
         )
 
     def check_for_bridge(self):

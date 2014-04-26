@@ -9,7 +9,7 @@
 #   Speed limit is 200 upt
 
 import random, cocos, time, math, threading
-from cocos.actions import MoveTo, Rotate
+from cocos.actions import MoveTo, RotateTo
 from UI import RoadPoints
 
 
@@ -32,10 +32,27 @@ class Vehicle():
         self.direction = direction
         self.status = Car_Status.Moving
         self.sprite = cocos.sprite.Sprite('car.png', scale=0.10)
+        if self.current_road % 2 == 0:
+            mod = 0
+            if self.current_road == 0 or self.current_road == 4:
+                mod = -1
+            else:
+                mod = 1
+            self.sprite.do(RotateTo(mod*56, 0))
+        if self.current_road == 1 or self.current_road == 5:
+            mod = 0
+            if self.current_road == 1:
+                mod = -1
+            else:
+                mod = 1
+            self.sprite.do(RotateTo(mod*90, 0))
+        if self.current_road == 3:
+            self.sprite.do(RotateTo(0, 0))
         self.position = 0
         self.running = False
         self.road_map = RoadPoints.ROADMAP
         self.sprite.position = self.road_map[self.current_road][0]
+        self.speed_label = None
         print("Vehicle " + name + " initialized!")
 
     def create_timestamp(self):
@@ -50,6 +67,22 @@ class Vehicle():
         if self.position > 1 and self.status != Car_Status.Warning: #If the road has been traveled and not on road 2 or 6
             self.current_road += 1 #Go to the next road
             self.position = 0 #Start over
+            if self.current_road % 2 == 0:
+                mod = 0
+                if self.current_road == 0 or self.current_road == 4:
+                    mod = -1
+                else:
+                    mod = 1
+                self.sprite.do(RotateTo(mod*56, 0))
+            if self.current_road == 1 or self.current_road == 5:
+                mod = 0
+                if self.current_road == 1:
+                    mod = -1
+                else:
+                    mod = 1
+                self.sprite.do(RotateTo(mod*90, 0))
+        if self.current_road == 3:
+            self.sprite.do(RotateTo(0, 0))
         else:
             if self.position > 1 and self.status == Car_Status.Warning:
                 self.status = Car_Status.Waiting

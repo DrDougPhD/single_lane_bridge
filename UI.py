@@ -62,25 +62,31 @@ class UI:
             self.schedule(lambda x: 0)
             print("Canvas added!")
 
-            print("Adding entities...")
+            print("Adding vehicles...")
             for vehicle in vehicleManager.vehicleList:
                 self.add(vehicle.sprite)
-                print("Entity " + vehicle.name + " added!")
-
-            print("Creating assorted UI elements...")
-            speedLabel = cocos.text.Label("Speed: ", position=(545, 450),
-                                          color=(200, 200, 200, 200))
-            self._speedText = cocos.text.Label(str(vehicleManager.speed), position=(600, 450),
-                                               color=(200, 200, 200, 200))
-            print("Adding assorted UI elements...")
-            self.add(speedLabel)
-            self.add(self._speedText)
+                print("Vehicle " + vehicle.name + " added!")
 
             print("Layer created!")
 
-        def redraw_speed(self, speed):
+        def redraw_speed(self, vehicle):
             print("Redrawing speed...")
-            self._speedText.element.text = str(speed)
+            vehicle.speed_label.element.text = str(vehicle.speed)
+
+        def create_speed_label(self, vehicle):
+            print("Creating speed label for " + vehicle.name + "...")
+            speedLabel = cocos.text.Label("Default: ", position=(545, 450),
+                                          color=(200, 200, 200, 200))
+            speedText = cocos.text.Label(str(vehicle.speed), position=(600, 450),
+                                               color=(200, 200, 200, 200))
+            self.add(speedLabel)
+            self.add(speedText)
+
+            vehicle.speed_label = speedText
+
+        def add_vehicle(self, vehicle):
+            self.add(vehicle.sprite)
+            print("Vehicle " + vehicle.name + " added!")
 
     class Key_Handler(cocos.layer.Layer):
         is_event_handler = True
@@ -99,6 +105,9 @@ class UI:
                 print("Starting simulation...")
                 for vehicle in self.vehManage.vehicleList:
                     vehicle.move()
+            if keyp == key.F1:
+                print("Adding new car...")
+                self.vehManage.add_vehicle("left")
 
 
 def main():

@@ -16,16 +16,18 @@ class Bridge_Mode():
     One_direction = 1
 
 class VehicleManager(threading.Thread):
-    def __init__(self, entityNum, speed, directions, mode):
+    def __init__(self, vehicleNum, speed, directions, mode):
         threading.Thread.__init__(self)
+        self.stopEvent = threading.Event()
         self.speed = speed
         self.vehicleList = []
         self.threadList = []
         self.layer = None
         self.bridge_mode = mode
         self.running = False
+        self.heartbeat_time = 5
 
-        for i in range(entityNum):
+        for i in range(vehicleNum):
             vehicle = Vehicle(str(i), speed, directions[i])
             self.vehicleList.append(vehicle)
             print("Vehicle " + str(i) + " added!")
@@ -50,6 +52,8 @@ class VehicleManager(threading.Thread):
 
         timeStampList = []
         while self.running:
+            if self.stopEvent.isSet():
+                self.exit()
             for vehicle in self.vehicleList:
                 print("Vehicle " + (vehicle.index) + " running!")
                 if vehicle.status != Car_Status.Waiting:
@@ -64,9 +68,8 @@ class VehicleManager(threading.Thread):
                 timeStampList.sort(key=operator.itemgetter(2)) #Sort by timestamp / 2nd column
                 print("Oldest timestamp: " + str(timeStampList[0][1]) + " from " + timeStampList[0][0])
 
-            sleep_time = 5 - (self.speed / 5)
-            print("Sleeping for " + str(sleep_time))
-            time.sleep(sleep_time)
+            print("Sleeping for " + str(self.heartbeat_time))
+            time.sleep(self.heartbeat_time)
 
     def start_threaded(self):
         self.running = True
@@ -84,10 +87,7 @@ class VehicleManager(threading.Thread):
             time.sleep(10)
 
     def stop(self):  #This may not even be needed...
-        for thread in self._threadList:
-            index = self._threadList.index(thread)
-            entityObj = self.vehicleList[index]
-            entityObj.stop()
-            thread.join()
+        self.stopEvent.set()
+        self.running = False
 
 

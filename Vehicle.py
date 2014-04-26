@@ -100,13 +100,12 @@ class Vehicle():
         self.sprite.do(
             MoveTo(
                     (
-                        (current_road_start_loc[0] + ((current_road_end_loc[0] - current_road_start_loc[0]) * self.position)),
-                        (current_road_start_loc[1] + ((current_road_end_loc[1] - current_road_start_loc[1]) * self.position))
+                        (current_road_start_loc[0] + ((current_road_end_loc[0] - current_road_start_loc[0]) * (self.position * (1 + self.speed / 200)))),
+                        (current_road_start_loc[1] + ((current_road_end_loc[1] - current_road_start_loc[1]) * (self.position * (1 + self.speed / 200))))
                     ), 0)
         )
 
-        self.label.position = ((current_road_start_loc[0] + ((current_road_end_loc[0] - current_road_start_loc[0]) * self.position)),
-                        (current_road_start_loc[1] + ((current_road_end_loc[1] - current_road_start_loc[1]) * self.position)))
+        self.label.position = self.sprite.position
 
     def check_for_bridge(self):
         print("Checking if vehicle " + str(self.index) + " is near the bridge!")

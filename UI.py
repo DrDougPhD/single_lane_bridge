@@ -117,35 +117,50 @@ class UI:
             self.add(vehicle.sprite)
             print("Vehicle " + str(vehicle.index) + " added!")
 
-    class Key_Handler(cocos.layer.Layer):
+    class Event_Handler(cocos.layer.Layer):
         is_event_handler = True
         def __init__(self, vehicleManage):
-            super(UI.Key_Handler, self).__init__()
+            super(UI.Event_Handler, self).__init__()
 
             self.vehManage = vehicleManage
 
+        def on_close(self):
+            self.vehManage.stop()
+
         def on_key_press(self, keyp, mod):
-            if keyp == key.NUM_ADD:
+            if keyp == key.NUM_ADD: #Set positive speed modifier
                 self._modifier = 1
-            if keyp == key.NUM_SUBTRACT:
+            if keyp == key.NUM_SUBTRACT: #Set negative speed modifier
                 self._modifier = -1
-            if (keyp >= 65456 and keyp <= 65465): #Numpad 1 - 9
-                index = keyp - 65456
+            if (keyp >= 65456 and keyp <= 65465): #Numpad 1 - 9. Modify vehicle speed
+                index = keyp - 65456 #Get vehicleList index
                 if self._modifier != None:
                     new_speed = self.vehManage.vehicleList[index].speed + (10 * self._modifier)
+                    print("Modifying vehicle speed by " + str(new_speed))
                     self.vehManage.vehicleList[index].speed = new_speed
                     self.vehManage.layer.redraw_speed(vehicle=self.vehManage.vehicleList[index])
-            if keyp == key.ENTER:
+                else:
+                    print("Please use a modifier before attempting to modify speed!")
+
+            if keyp == key.ENTER: #Begin / stop simulation
                 print("Starting simulation...")
                 self.vehManage.start()
                 for vehicle in self.vehManage.vehicleList:
                     vehicle.move()
-            if keyp == key.F1:
+
+            if keyp == key.F1: #Add new vehicle
                 if len(self.vehManage.vehicleList) < 9:
                     print("Adding new car...")
+
                     self.vehManage.add_vehicle("left")
-            if keyp == key.SPACE:
+            if keyp == key.SPACE: #Switch bridge modes
                 self.vehManage.bridge_mode = ~self.vehManage.bridge_mode + 1 #Complement + 1
+
+            if keyp == key.ESCAPE: #Exit application gracefully
+                self.vehManage.stop()
+                print("Goodbye!")
+                sys.exit(384) #;D
+
 
 
 def main():
@@ -158,17 +173,14 @@ def main():
     vehManage.layer = layer
     layer.create_speed_label(vehManage=vehManage)
     layer.create_vehicle_label(vehManage=vehManage)
-    keyHandler = UI.Key_Handler(vehManage)
+    eventHandler = UI.Event_Handler(vehManage)
 
     color_layer = cocos.layer.ColorLayer(0,104,10, 0)
     print("Starting scene...")
-    scene = Scene(keyHandler, color_layer, layer)
+    scene = Scene(eventHandler, color_layer, layer)
     print("Running scene...")
     UIThread = threading.Thread(group=None,target=cocos.director.director.run(scene))
     UIThread.start()
-    UIThread.run()
-    print("Scene running!")
-    print("Goodbye!")
 
 
 if __name__ == "__main__":

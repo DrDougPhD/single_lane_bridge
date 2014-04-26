@@ -22,3 +22,11 @@ By far, the people of the islands are more intelligent than their politicians. T
 1. Many people may be on the bridge at one time given that all bridge-goers are traveling in the same direction (no dead-lock)
 2. No person can be indefinitely prevented from crossing the bridge (no live-lock)
 3. Assume all vehicular clocks are synchronized
+
+Keyboard Controls
+------------------------
+F1 = Add new vehicle
+Numpad + or - = Change speed modifier to positive or negative
+Numpad 1 to 9 = Change speed of vehicle 1 or 2 or, etc. (After a speed modifier is chosen)
+Enter = Start / Stop simulation
+Space = Change simulation mode (One at a time or One direction)

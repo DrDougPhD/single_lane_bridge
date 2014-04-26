@@ -12,7 +12,7 @@ from Vehicle import *
 import random, sys, threading, operator, time
 
 class Bridge_Mode():
-    One_at_a_Time = 0
+    One_at_a_Time = -1
     One_direction = 1
 
 class VehicleManager():

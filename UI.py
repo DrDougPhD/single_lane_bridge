@@ -125,10 +125,6 @@ class UI:
                     new_speed = self.vehManage.vehicleList[index].speed + (10 * self._modifier)
                     self.vehManage.vehicleList[index].speed = new_speed
                     self.vehManage.layer.redraw_speed(vehicle=self.vehManage.vehicleList[index])
-            if mod == key.SPACE:
-                speed_increase = self.vehManage.speed + 10
-                print("Increasing speed to: " + str(speed_increase))
-                self.vehManage.set_speed(speed_increase)
             if keyp == key.ENTER:
                 print("Starting simulation...")
                 for vehicle in self.vehManage.vehicleList:
@@ -136,6 +132,8 @@ class UI:
             if keyp == key.F1:
                 print("Adding new car...")
                 self.vehManage.add_vehicle("left")
+            if keyp == key.SPACE:
+                self.vehManage.bridge_mode = ~self.vehManage.bridge_mode + 1 #Complement + 1
 
 
 def main():

@@ -8,7 +8,7 @@
 #   Speed is Units per Tick
 #   Speed limit is 200 upt
 
-from Vehicle import Entity
+from Vehicle import *
 import random, sys, threading, operator, time
 
 class Bridge_Mode():
@@ -22,39 +22,60 @@ class VehicleManager():
         self.threadList = []
         self.layer = None
         self.bridge_mode = mode
-        self._running = False
+        self.running = False
 
         carNameList = [ "Scion", "Toyota", "Ford", "Lamborgini", "Tesla", "Mercedes", "Mazda", "Chevrolet", "BMW",
                         "Porsche", "Audi", "Volkswagen", "Maserati", "Ferrari", "Subaru", "Lexus", "Honda", "Acura" ]
         for i in range(entityNum):
             randomCar = random.randint(len(carNameList), sys.maxint) % len(carNameList)
-            entity = Entity(carNameList[randomCar], speed, directions[i])
-            self.entityList.append(entity)
+            vehicle = Vehicle(carNameList[randomCar], speed, directions[i])
+            self.vehicleList.append(vehicle)
             print("Vehicle " + str(i) + " added!")
 
     def set_speed(self, speed):
-        self._speed = speed
-        self._layer.redraw_speed(speed)
+        self.speed = speed
+        self.layer.redraw_speed(speed)
 
         for vehicle in self.vehicleList:
             vehicle.set_speed(speed)
 
-    def start(self):
-        self._running = True
+
+    def start_round_robin(self):
+        self.running = True
+
+        timeStampList = []
+        while self.running:
+            for vehicle in self.vehicleList:
+                print("Entity " + vehicle.name + " running!")
+                if vehicle.status != Car_Status.Waiting:
+                    vehicle.move()
+                    vehicle.check_for_bridge()
+
+                if vehicle.timestamp != -1:
+                    timeStampList.append([vehicle, vehicle.timestamp])
+                    vehicle.timestamp = -1
+
+            if len(timeStampList) > 0:
+                timeStampList.sort(key=operator.itemgetter(2)) #Sort by timestamp / 2nd column
+                print("Oldest timestamp: " + str(timeStampList[0][1]) + " from " + timeStampList[0][0])
+
+            sleep_time = 10 - (self.speed / 60)
+            print("Sleeping for " + str(sleep_time))
+            time.sleep(sleep_time) #Yield
+
+    def start_threaded(self):
+        self.running = True
 
         for vehicle in self.vehicleList:
             vehicle.start()
 
         timeStampList = []
-        while self._running:
+        while self.running:
             print("Run")
             for vehicle in self.vehicleList:
                 if vehicle.status == "Waiting":
-                    timeStampList.append([vehicle, vehicle.timestamp])
+                   timeStampList.append([vehicle, vehicle.timestamp])
 
-            if len(timeStampList) > 0:
-                timeStampList.sort(key=operator.itemgetter(2)) #Sort by timestamp / 2nd column
-                print("Oldest timestamp: " + str(timeStampList[0][1]) + " from " + timeStampList[0][0])
             time.sleep(10)
 
     def stop(self):  #This may not even be needed...
@@ -63,4 +84,5 @@ class VehicleManager():
             entityObj = self.vehicleList[index]
             entityObj.stop()
             thread.join()
+
 

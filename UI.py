@@ -10,8 +10,7 @@
 
 
 import cocos
-from VehicleManager import Vehicle
-from VehicleManager import Bridge_Mode
+from VehicleManager import *
 from cocos.director import director
 from cocos.draw import Line
 from cocos.scene import Scene
@@ -54,7 +53,7 @@ class UI:
             print("Road map drawn!")
 
     class Layer(cocos.layer.Layer):
-        def __init__(self, entityManager):
+        def __init__(self, vehicleManager):
             super(UI.Layer, self).__init__()
 
             print("Creating layer...")
@@ -64,15 +63,14 @@ class UI:
             print("Canvas added!")
 
             print("Adding entities...")
-            entityList = entityManager.get_entity_list()
-            for entity in entityList:
-                self.add(entity.get_sprite())
-                print("Entity " + entity.get_name() + " added!")
+            for vehicle in vehicleManager.vehicleList:
+                self.add(vehicle.sprite)
+                print("Entity " + vehicle.name + " added!")
 
             print("Creating assorted UI elements...")
             speedLabel = cocos.text.Label("Speed: ", position=(545, 450),
                                           color=(200, 200, 200, 200))
-            self._speedText = cocos.text.Label(str(entityManager.get_speed()), position=(600, 450),
+            self._speedText = cocos.text.Label(str(vehicleManager.speed), position=(600, 450),
                                                color=(200, 200, 200, 200))
             print("Adding assorted UI elements...")
             self.add(speedLabel)
@@ -87,31 +85,31 @@ class UI:
     class Key_Handler(cocos.layer.Layer):
         is_event_handler = True
 
-        def __init__(self, entityManager):
+        def __init__(self, vehicleManage):
             super(UI.Key_Handler, self).__init__()
 
-            self._entManager = entityManager
+            self.vehManage = vehicleManage
 
         def on_key_press(self, keyp, mod):
             if keyp == key.SPACE:
-                speed_increase = self._entManager.get_speed() + 10
+                speed_increase = self.vehManage.speed + 10
                 print("Increasing speed to: " + str(speed_increase))
-                self._entManager.set_speed(speed_increase)
+                self.vehManage.set_speed(speed_increase)
             if keyp == key.ENTER:
                 print("Starting simulation...")
-                self._entManager.start()
+                self.vehManage.start_round_robin()
 
 
 def main():
     cocos.director.director.init(caption="CS 384 Project")
 
     directions = ["left", "right"]
-    entManage = Vehicle(2, 10, directions, Bridge_Mode.One_at_a_Time)
-    layer = UI.Layer(entManage)
+    vehManage = VehicleManager(2, 10, directions, Bridge_Mode.One_at_a_Time)
+    layer = UI.Layer(vehManage)
     print("Setting layer object...")
-    entManage.set_layer_obj(layer)
+    vehManage.layer = layer
 
-    keyHandler = UI.Key_Handler(entManage)
+    keyHandler = UI.Key_Handler(vehManage)
 
     print("Starting scene...")
     scene = Scene(layer, keyHandler)

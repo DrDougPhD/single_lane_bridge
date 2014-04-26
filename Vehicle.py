@@ -19,9 +19,8 @@ class Car_Status(): #You can totally tell I am a C# developer... can't you?
     Warning = 2
     On_Bridge = 3
 
-class Vehicle(threading.Thread):
+class Vehicle():
     def __init__(self, name, speed, direction):
-        threading.Thread.__init__(self)
         print("Initializing entity " + name + "...")
         random_road = 3
         while random_road == 3: #"Bridge" is road 3 and no one can start there
@@ -40,7 +39,7 @@ class Vehicle(threading.Thread):
         print("Vehicle " + name + " initialized!")
 
     def create_timestamp(self):
-        self._timestamp = time.time()
+        self.timestamp = time.time()
 
     def move(self):
         #if self._direction == "left":
@@ -94,5 +93,4 @@ class Vehicle(threading.Thread):
                 self.check_for_bridge()
                 sleep_time = 10 - (self.speed / 60)
                 print("Sleeping for " + str(sleep_time))
-                time.sleep(sleep_time)
-        return
+                time.sleep(sleep_time) #Yield

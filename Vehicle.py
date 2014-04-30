@@ -99,13 +99,14 @@ class Vehicle():
                 else:
                     mod = 1
                 self.sprite.do(RotateTo(mod*90, 0))
-        if self.current_road == 3:
-            self.sprite.do(RotateTo(0, 0))
         else:
             if self.position >= 0.85 and self.status == Car_Status.Warning:
                 self.status = Car_Status.Waiting
                 self.create_timestamp() #Fairness should be assured doing it this way,
                                         #assuming system threading is fair, I guess?
+
+        if self.current_road == 3:
+            self.sprite.do(RotateTo(0, 0))
 
         current_road_start_loc = self.road_map[self.current_road][0]
         current_road_end_loc = self.road_map[self.current_road][1]

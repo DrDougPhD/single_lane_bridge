@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="515c885c-970b-4140-83d9-a13cfbd42eee" name="Default" comment="Removed Menu class&#10;Added Entity class&#10;Added Entity.__init__()&#10;  Added Entity.Start()&#10;  Added Entity.Stop()&#10;  Added Entity.GetLocation()&#10;Added EntityManager class&#10;  Added EntityManager.__init__()">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UI.py" afterPath="$PROJECT_DIR$/UI.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Vehicle.py" afterPath="$PROJECT_DIR$/Vehicle.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/VehicleManager.py" afterPath="$PROJECT_DIR$/VehicleManager.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="single_lane_bridge.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -41,7 +38,7 @@
       <file leaf-file-name=".gitignore" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="0" selection-start="10" selection-end="10" vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="731">
+            <state line="2" column="0" selection-start="11" selection-end="11" vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="748">
               <folding />
             </state>
           </provider>
@@ -59,7 +56,7 @@
       <file leaf-file-name="Vehicle.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Vehicle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="41" column="25" selection-start="1265" selection-end="1265" vertical-scroll-proportion="0.28795812" vertical-offset="498" max-vertical-offset="2567">
+            <state line="26" column="7" selection-start="635" selection-end="635" vertical-scroll-proportion="0.58464223" vertical-offset="73" max-vertical-offset="2584">
               <folding />
             </state>
           </provider>
@@ -68,7 +65,7 @@
       <file leaf-file-name="VehicleManager.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/VehicleManager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="63" column="42" selection-start="2000" selection-end="2000" vertical-scroll-proportion="0.0" vertical-offset="260" max-vertical-offset="1649">
+            <state line="59" column="46" selection-start="1841" selection-end="1841" vertical-scroll-proportion="0.0" vertical-offset="770" max-vertical-offset="1649">
               <folding />
             </state>
           </provider>
@@ -99,9 +96,9 @@
         <option value="$PROJECT_DIR$/Entity.py" />
         <option value="$PROJECT_DIR$/EntityManager.py" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/VehicleManager.py" />
         <option value="$PROJECT_DIR$/UI.py" />
         <option value="$PROJECT_DIR$/Vehicle.py" />
+        <option value="$PROJECT_DIR$/VehicleManager.py" />
       </list>
     </option>
   </component>
@@ -764,7 +761,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="10" selection-end="10" vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="731">
+        <state line="2" column="0" selection-start="11" selection-end="11" vertical-scroll-proportion="0.0" vertical-offset="34" max-vertical-offset="748">
           <folding />
         </state>
       </provider>
@@ -776,13 +773,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/VehicleManager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="63" column="42" selection-start="2000" selection-end="2000" vertical-scroll-proportion="0.0" vertical-offset="770" max-vertical-offset="1649">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/UI.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="38" column="0" selection-start="788" selection-end="788" vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="3264">
@@ -790,9 +780,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/VehicleManager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="59" column="46" selection-start="1841" selection-end="1841" vertical-scroll-proportion="0.0" vertical-offset="770" max-vertical-offset="1649">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Vehicle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="25" selection-start="1265" selection-end="1265" vertical-scroll-proportion="0.28795812" vertical-offset="498" max-vertical-offset="2567">
+        <state line="26" column="7" selection-start="635" selection-end="635" vertical-scroll-proportion="0.58464223" vertical-offset="73" max-vertical-offset="2584">
           <folding />
         </state>
       </provider>

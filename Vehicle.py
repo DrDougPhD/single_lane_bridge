@@ -22,22 +22,32 @@ class Car_Status(): #You can totally tell I am a C# developer... can't you?
 class Vehicle():
     def __init__(self, index, speed, direction):
         print("Initializing vehicle " + str(index) + "...")
+
         random_road = 3
         while random_road == 3: #"Bridge" is road 3 and no one can start there
-            random_road = random.randrange(0, 6)
+            random_road = random.randrange(0, 7)
+
         self.current_road = random_road
         self.timestamp = -1
         self.index = index
         self.speed = speed
         self.direction = direction
         self.status = Car_Status.Moving
-        self.sprite = cocos.sprite.Sprite('car2.png', scale=0.10, color=(random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)))
+        self.sprite = cocos.sprite.Sprite('car2.png', scale=0.10, color=
+        (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)))
+
         if self.current_road % 2 == 0:
             mod = 0
             if self.current_road == 0 or self.current_road == 4:
-                mod = -1
+                if self.current_road == 4:
+                    mod = -1
+                else:
+                    mod = -4.2142857
             else:
-                mod = 1
+                if self.current_road == 2:
+                    mod = 1
+                else:
+                    mod = 4.2142857
             self.sprite.do(RotateTo(mod*56, 0))
         if self.current_road == 1 or self.current_road == 5:
             mod = 0
@@ -48,11 +58,13 @@ class Vehicle():
             self.sprite.do(RotateTo(mod*90, 0))
         if self.current_road == 3:
             self.sprite.do(RotateTo(0, 0))
+
         self.position = 0
         self.running = False
         self.road_map = RoadPoints.ROADMAP
         self.sprite.position = self.road_map[self.current_road][0]
         self.label = None
+
         print("Vehicle " + str(index) + " initialized!")
 
     def create_timestamp(self):
@@ -70,7 +82,10 @@ class Vehicle():
             if self.current_road % 2 == 0:
                 mod = 0
                 if self.current_road == 0 or self.current_road == 4:
-                    mod = -1
+                    if self.current_road == 4:
+                        mod = -1
+                    else:
+                        mod = -4.2142857
                 else:
                     if self.current_road == 2:
                         mod = 1
@@ -87,7 +102,7 @@ class Vehicle():
         if self.current_road == 3:
             self.sprite.do(RotateTo(0, 0))
         else:
-            if self.position > 1 and self.status == Car_Status.Warning:
+            if self.position >= 0.85 and self.status == Car_Status.Warning:
                 self.status = Car_Status.Waiting
                 self.create_timestamp() #Fairness should be assured doing it this way,
                                         #assuming system threading is fair, I guess?

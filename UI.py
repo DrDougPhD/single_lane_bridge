@@ -28,7 +28,7 @@ class RoadPoints:
     EAST_BRIDGE_ENTRY = 400, 250
 
     ROADMAP = [
-        [NW, WEST_BRIDGE_ENTRY],
+        [WEST_BRIDGE_ENTRY, NW],
         [NW, SW],
         [SW, WEST_BRIDGE_ENTRY],
         [WEST_BRIDGE_ENTRY, EAST_BRIDGE_ENTRY],

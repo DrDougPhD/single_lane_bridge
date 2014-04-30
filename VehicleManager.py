@@ -64,7 +64,7 @@ class VehicleManager(threading.Thread):
                     vehicle.timestamp = -1
 
             if len(timeStampList) > 0:
-                timeStampList.sort(key=operator.itemgetter(2)) #Sort by timestamp / 2nd column
+                #timeStampList.sort(key=operator.itemgetter(2)) #Sort by timestamp / 2nd column
                 print("Oldest timestamp: " + str(timeStampList[0][1]) + " from " + timeStampList[0][0])
 
             print("Sleeping for 0.5 seconds")

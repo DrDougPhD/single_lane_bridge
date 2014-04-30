@@ -109,7 +109,9 @@ class UI:
 
             for vehicle in to_create_list:
                 index = self._vehManage.vehicleList.index(vehicle)
-                vehicleLabel = cocos.text.Label(str(index), position=vehicle.sprite.position, color=self.label_color)
+                vehicleLabel = cocos.text.Label(str(index), position=(vehicle.sprite.position[0] + 10,
+                                                                      vehicle.sprite.position[1] + 10),
+                                                color=self.label_color)
                 vehicle.label = vehicleLabel
                 self.add(vehicleLabel)
 
@@ -149,7 +151,7 @@ class UI:
                     vehicle.move()
 
             if keyp == key.F1: #Add new vehicle
-                if len(self.vehManage.vehicleList) < 9:
+                if len(self.vehManage.vehicleList) < 10:
                     print("Adding new car...")
 
                     self.vehManage.add_vehicle("left")

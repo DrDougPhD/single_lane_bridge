@@ -25,7 +25,6 @@ class VehicleManager(threading.Thread):
         self.layer = None
         self.bridge_mode = mode
         self.running = False
-        self.heartbeat_time = 5
 
         for i in range(vehicleNum):
             vehicle = Vehicle(str(i), speed, directions[i])
@@ -68,8 +67,8 @@ class VehicleManager(threading.Thread):
                 timeStampList.sort(key=operator.itemgetter(2)) #Sort by timestamp / 2nd column
                 print("Oldest timestamp: " + str(timeStampList[0][1]) + " from " + timeStampList[0][0])
 
-            print("Sleeping for " + str(self.heartbeat_time))
-            time.sleep(self.heartbeat_time)
+            print("Sleeping for 0.5 seconds")
+            time.sleep(0.5)
 
     def start_threaded(self):
         self.running = True

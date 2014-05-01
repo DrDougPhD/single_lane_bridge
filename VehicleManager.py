@@ -53,11 +53,14 @@ class VehicleManager(threading.Thread):
         while self.running:
             if self.stopEvent.isSet():
                 self.exit()
+
             for vehicle in self.vehicleList:
-                print("Vehicle " + (vehicle.index) + " running!")
+                print("Vehicle " + str(vehicle.index) + "'s status is " + str(vehicle.status))
                 if vehicle.status != Car_Status.Waiting:
                     vehicle.move()
                     vehicle.check_for_bridge()
+                else:
+                    print("Vehicle " + str(vehicle.index) + " waiting!")
 
                 if vehicle.timestamp != -1:
                     timeStampList.append([vehicle, vehicle.timestamp])
@@ -67,7 +70,6 @@ class VehicleManager(threading.Thread):
                 #timeStampList.sort(key=operator.itemgetter(2)) #Sort by timestamp / 2nd column
                 print("Oldest timestamp: " + str(timeStampList[0][1]) + " from vehicle " + str(timeStampList[0][0].index))
 
-            print("Sleeping for 0.5 seconds")
             time.sleep(0.5)
 
     def start_threaded(self):

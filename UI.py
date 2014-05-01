@@ -75,7 +75,6 @@ class UI:
             print("Layer created!")
 
         def redraw_speed(self, vehicle):
-            print("Redrawing speed...")
             vehicle.speed_label.element.text = str(vehicle.speed)
 
         def create_speed_label(self, vehicle=None, vehManage=None):
@@ -155,6 +154,7 @@ class UI:
                     print("Adding new car...")
 
                     self.vehManage.add_vehicle("left")
+
             if keyp == key.SPACE: #Switch bridge modes
                 self.vehManage.bridge_mode = ~self.vehManage.bridge_mode + 1 #Complement + 1
 

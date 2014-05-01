@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="515c885c-970b-4140-83d9-a13cfbd42eee" name="Default" comment="Removed Menu class&#10;Added Entity class&#10;Added Entity.__init__()&#10;  Added Entity.Start()&#10;  Added Entity.Stop()&#10;  Added Entity.GetLocation()&#10;Added EntityManager class&#10;  Added EntityManager.__init__()">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UI.py" afterPath="$PROJECT_DIR$/UI.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Vehicle.py" afterPath="$PROJECT_DIR$/Vehicle.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/VehicleManager.py" afterPath="$PROJECT_DIR$/VehicleManager.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="single_lane_bridge.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,7 +31,7 @@
       <file leaf-file-name="README.md" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="24" selection-start="1382" selection-end="1382" vertical-scroll-proportion="-10.88" vertical-offset="0" max-vertical-offset="646">
+            <state line="16" column="24" selection-start="1382" selection-end="1382" vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="646">
               <folding />
             </state>
           </provider>
@@ -47,25 +49,25 @@
       <file leaf-file-name="UI.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/UI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="0" selection-start="788" selection-end="788" vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="3264">
+            <state line="139" column="73" selection-start="4833" selection-end="4833" vertical-scroll-proportion="0.0" vertical-offset="2108" max-vertical-offset="3264">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Vehicle.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Vehicle.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Vehicle.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="7" selection-start="635" selection-end="635" vertical-scroll-proportion="0.58464223" vertical-offset="73" max-vertical-offset="2584">
+            <state line="124" column="27" selection-start="4624" selection-end="4624" vertical-scroll-proportion="0.0" vertical-offset="118" max-vertical-offset="2414">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="VehicleManager.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="VehicleManager.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/VehicleManager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="59" column="46" selection-start="1841" selection-end="1841" vertical-scroll-proportion="0.0" vertical-offset="770" max-vertical-offset="1649">
+            <state line="69" column="45" selection-start="2211" selection-end="2211" vertical-scroll-proportion="0.41129032" vertical-offset="799" max-vertical-offset="1683">
               <folding />
             </state>
           </provider>
@@ -150,6 +152,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -174,7 +177,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -411,16 +413,16 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39932886" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.1953125" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32997763" sideWeight="0.8046875" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.8046875" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32997763" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32997763" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32997763" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -768,28 +770,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="24" selection-start="1382" selection-end="1382" vertical-scroll-proportion="-10.88" vertical-offset="0" max-vertical-offset="646">
+        <state line="16" column="24" selection-start="1382" selection-end="1382" vertical-scroll-proportion="0.0" vertical-offset="272" max-vertical-offset="646">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/UI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="0" selection-start="788" selection-end="788" vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="3264">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/VehicleManager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="46" selection-start="1841" selection-end="1841" vertical-scroll-proportion="0.0" vertical-offset="770" max-vertical-offset="1649">
+        <state line="139" column="73" selection-start="4833" selection-end="4833" vertical-scroll-proportion="0.0" vertical-offset="2108" max-vertical-offset="3264">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Vehicle.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="7" selection-start="635" selection-end="635" vertical-scroll-proportion="0.58464223" vertical-offset="73" max-vertical-offset="2584">
+        <state line="124" column="27" selection-start="4624" selection-end="4624" vertical-scroll-proportion="0.0" vertical-offset="118" max-vertical-offset="2414">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/VehicleManager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="69" column="45" selection-start="2211" selection-end="2211" vertical-scroll-proportion="0.41129032" vertical-offset="799" max-vertical-offset="1683">
           <folding />
         </state>
       </provider>

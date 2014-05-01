@@ -75,7 +75,6 @@ class Vehicle():
             #upcomingRoad = (self._current_road + 1) % 3 #(Number of roads - 1) / 2
         #if self._direction == "right":
             #upcomingRoad = (self._current_road - 1) % 3 #(Number of roads - 1) / 2
-        print("Moving...")
         if self.position >= 1 and self.status != Car_Status.Warning: #If the road has been traveled and not on road 2 or 6
             self.current_road += 1 #Go to the next road
             self.position = 0 #Start over
@@ -102,8 +101,11 @@ class Vehicle():
         else:
             if self.position >= 0.85 and self.status == Car_Status.Warning:
                 self.status = Car_Status.Waiting
-                self.create_timestamp() #Fairness should be assured doing it this way,
-                                        #assuming system threading is fair, I guess?
+                self.create_timestamp()
+                return
+            if self.status == Car_Status.On_Bridge:
+                self.position = 0
+                self.current_road = 3
 
         if self.current_road == 3:
             self.sprite.do(RotateTo(0, 0))
@@ -115,7 +117,6 @@ class Vehicle():
                                math.pow((current_road_end_loc[1] - current_road_start_loc[1]), 2))
 
         self.position += (1.0 / road_length) * (1 + self.speed / 100) #Step size
-        print("Position: " + str(self.position))
         self.sprite.do(
             MoveTo(
                     (
@@ -125,25 +126,13 @@ class Vehicle():
         )
 
         self.label.position = (self.sprite.position[0] + 10, self.sprite.position[1] + 10)
+
     def check_for_bridge(self):
-        print("Checking if vehicle " + str(self.index) + " is near the bridge!")
         if self.status == Car_Status.Waiting:
             print("Vehicle " + str(self.index) + " is waiting at the bridge!")
             #return self.handle_cs()
-        if ((self.current_road == 2) or (self.current_road == 6) and self.status != Car_Status.Warning):
+        if ((self.current_road == 2) or (self.current_road == 6) and
+            (self.status != Car_Status.Warning and self.status != Car_Status.Waiting)):
             print("Vehicle " + str(self.index) + " is near the bridge!")
             self.status = Car_Status.Warning
             return True
-
-    def run(self):
-        print("Setting run to True")
-        self.running = True
-        print("Entity " + self.name + " starting...")
-        while self.running:
-            print("Entity " + self.name + " running!")
-            while self.status != Car_Status.Waiting:
-                self.move()
-                self.check_for_bridge()
-                sleep_time = 10 - (self.speed / 60)
-                print("Sleeping for " + str(sleep_time))
-                time.sleep(sleep_time) #Yield

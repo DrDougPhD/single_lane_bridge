@@ -3,10 +3,6 @@
 #Written by Madeline Cameron and Doug McGeehan
 #CS 384 - Distributed Operating Systems
 #Spring 2014
-#
-#Info:
-#   Speed is Units per Tick
-#   Speed limit is 200 upt
 
 
 import cocos
@@ -42,8 +38,8 @@ class UI:
         def render(self):
             print("Creating canvas...")
             x, y = director.get_window_size()
-            color = 255, 255, 255, 255
-            width = 3
+            color = 255, 255, 255, 255 #Color of lines / roads
+            width = 3 #How wide the roads are drawn
 
             for start, end in RoadPoints.ROADMAP:
                 self.set_color(color)

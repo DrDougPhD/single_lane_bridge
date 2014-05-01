@@ -1,12 +1,8 @@
-#EntityManager.py
+#VehicleManager.py
 #
 #Written by Madeline Cameron and Doug McGeehan
 #CS 384 - Distributed Operating Systems
 #Spring 2014
-#
-#Info:
-#   Speed is Units per Tick
-#   Speed limit is 200 upt
 
 from Vehicle import *
 import random, sys, threading, operator, time
@@ -21,10 +17,10 @@ class VehicleManager(threading.Thread):
         self.stopEvent = threading.Event()
         self.speed = speed
         self.vehicleList = []
-        self.threadList = []
         self.layer = None
         self.bridge_mode = mode
         self.running = False
+        self.tick = 0.5
 
         for i in range(vehicleNum):
             vehicle = Vehicle(str(i), speed, directions[i])
@@ -39,7 +35,6 @@ class VehicleManager(threading.Thread):
             vehicle.set_speed(speed)
 
     def add_vehicle(self, direction):
-        #These really need to be more meaningful eventually...
         vehicle = Vehicle(str(len(self.vehicleList)), self.speed, direction)
         self.vehicleList.append(vehicle)
         self.layer.add_vehicle(vehicle)
@@ -51,11 +46,10 @@ class VehicleManager(threading.Thread):
 
         timeStampList = []
         while self.running:
-            if self.stopEvent.isSet():
+            if self.stopEvent.isSet(): #Look for exit event to be set
                 self.exit()
 
             for vehicle in self.vehicleList:
-                print("Vehicle " + str(vehicle.index) + "'s status is " + str(vehicle.status))
                 if vehicle.status != Car_Status.Waiting:
                     vehicle.move()
                     vehicle.check_for_bridge()
@@ -70,22 +64,7 @@ class VehicleManager(threading.Thread):
                 #timeStampList.sort(key=operator.itemgetter(2)) #Sort by timestamp / 2nd column
                 print("Oldest timestamp: " + str(timeStampList[0][1]) + " from vehicle " + str(timeStampList[0][0].index))
 
-            time.sleep(0.5)
-
-    def start_threaded(self):
-        self.running = True
-
-        for vehicle in self.vehicleList:
-            vehicle.start()
-
-        timeStampList = []
-        while self.running:
-            print("Run")
-            for vehicle in self.vehicleList:
-                if vehicle.status == "Waiting":
-                   timeStampList.append([vehicle, vehicle.timestamp])
-
-            time.sleep(10)
+            time.sleep(0.5) #Arbitrary
 
     def stop(self):  #This may not even be needed...
         self.stopEvent.set()

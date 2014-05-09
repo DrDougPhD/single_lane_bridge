@@ -5,15 +5,19 @@
 #Spring 2014
 
 from Vehicle import *
-import random, sys, threading, operator, time
+import random
+import sys
+import threading
+import operator
+import time
 
 class Bridge_Mode():
     One_at_a_Time = -1
     One_direction = 1
 
-class VehicleManager(threading.Thread):
+class VehicleManager:#(threading.Thread):
     def __init__(self, vehicleNum, speed, directions, mode):
-        threading.Thread.__init__(self)
+        #threading.Thread.__init__(self)
         self.stopEvent = threading.Event()
         self.speed = speed
         self.vehicleList = []
@@ -26,6 +30,9 @@ class VehicleManager(threading.Thread):
             vehicle = Vehicle(str(i), speed, directions[i])
             self.vehicleList.append(vehicle)
             print("Vehicle " + str(i) + " added!")
+
+        for i in self.vehicleList:
+            i.set_other_vehicles(self.vehicleList)
 
     def set_speed(self, speed):
         self.speed = speed
@@ -40,6 +47,13 @@ class VehicleManager(threading.Thread):
         self.layer.add_vehicle(vehicle)
         self.layer.create_speed_label(vehicle=vehicle)
         self.layer.create_vehicle_label(vehicle=vehicle)
+
+
+    def start(self):
+      print("Starting!!!!!")
+      for v in self.vehicleList:
+        v.begin()
+
 
     def run(self):
         self.running = True

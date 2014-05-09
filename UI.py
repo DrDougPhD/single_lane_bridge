@@ -14,23 +14,23 @@ from pyglet.window import key
 
 
 class RoadPoints:
-    NW = 100, 100
-    SW = 100, 400
-    NE = 500, 100
-    SE = 500, 400
+    SW = 100, 100
+    NW = 100, 400
+    SE = 500, 100
+    NE = 500, 400
 
     # Intersections of the road with the bridge.
-    WEST_BRIDGE_ENTRY = 200, 250
-    EAST_BRIDGE_ENTRY = 400, 250
+    W = 200, 250
+    E = 400, 250
 
     ROADMAP = [
-        [WEST_BRIDGE_ENTRY, NW],
+        [W, NW],
         [NW, SW],
-        [SW, WEST_BRIDGE_ENTRY],
-        [WEST_BRIDGE_ENTRY, EAST_BRIDGE_ENTRY],
-        [EAST_BRIDGE_ENTRY, SE],
+        [SW, W],
+        [W, E],
+        [E, SE],
         [SE, NE],
-        [NE, EAST_BRIDGE_ENTRY],
+        [NE, E],
     ]
 
 class UI:
@@ -142,8 +142,8 @@ class UI:
             if keyp == key.ENTER: #Begin / stop simulation
                 print("Starting simulation...")
                 self.vehManage.start()
-                for vehicle in self.vehManage.vehicleList:
-                    vehicle.move()
+                #for vehicle in self.vehManage.vehicleList:
+                #    vehicle.move()
 
             if keyp == key.F1: #Add new vehicle
                 if len(self.vehManage.vehicleList) < 10:
@@ -165,7 +165,12 @@ def main():
     cocos.director.director.init(caption="CS 384 Project")
 
     directions = ["left", "right"]
-    vehManage = VehicleManager(2, 10, directions, Bridge_Mode.One_at_a_Time)
+    vehManage = VehicleManager(
+      vehicleNum=2,
+      speed=10, 
+      directions=directions,
+      mode=Bridge_Mode.One_at_a_Time
+    )
     layer = UI.Layer(vehManage)
     print("Setting layer object...")
     vehManage.layer = layer
@@ -177,8 +182,10 @@ def main():
     print("Starting scene...")
     scene = Scene(eventHandler, color_layer, layer)
     print("Running scene...")
-    UIThread = threading.Thread(group=None,target=cocos.director.director.run(scene))
-    UIThread.start()
+    # I don't think we need threading.
+    #UIThread = threading.Thread(group=None,target=cocos.director.director.run(scene))
+    #UIThread.start()
+    cocos.director.director.run(scene)
 
 
 if __name__ == "__main__":

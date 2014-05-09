@@ -8,9 +8,13 @@ import random, cocos, time, math, threading
 from cocos.actions import MoveTo, RotateTo
 from UI import RoadPoints
 from cocos.actions import CallFunc
+import math
 
 def duration(src, dst, speed):
-  return 1
+  x1, y1 = src
+  x2, y2 = dst
+  d = math.hypot(x2 - x1, y2 - y1)
+  return d/speed
 
 
 # Precondition: The process which called this is waiting for the token to
@@ -167,7 +171,7 @@ class Vehicle():
 
 
     def begin(self):
-      drive_path = get_town_travel_path(self.road_map[self.current_road][0], self)
+      drive_path = get_town_travel_path(self.road_map[self.current_road][0], self.speed)
       request_bridge_access = CallFunc(self.request_access_to_bridge)
       self.sprite.do(drive_path + request_bridge_access) 
 

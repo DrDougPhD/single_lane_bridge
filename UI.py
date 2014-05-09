@@ -167,7 +167,7 @@ def main():
     directions = ["left", "right"]
     vehManage = VehicleManager(
       vehicleNum=2,
-      speed=10, 
+      speed=100, 
       directions=directions,
       mode=Bridge_Mode.One_at_a_Time
     )

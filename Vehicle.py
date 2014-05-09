@@ -31,10 +31,13 @@ class Vehicle():
         self.status = Car_Status.Moving
         self.position = 0
         self.road_map = RoadPoints.ROADMAP
-        self.sprite.position = self.road_map[self.current_road][0]
         self.label = None
-        self.sprite = cocos.sprite.Sprite('car2.png', scale=0.10, color=
-        (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255))) #Pick a random color
+        self.sprite = cocos.sprite.Sprite(
+          'car2.png',
+          scale=0.10,
+          color=[random.randrange(0, 255) for i in range(3)]
+        ) #Pick a random color
+        self.sprite.position = self.road_map[self.current_road][0]
 
         if self.current_road % 2 == 0: #Vehicle rotation
             mod = 0

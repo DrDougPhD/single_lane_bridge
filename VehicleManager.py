@@ -43,6 +43,11 @@ class VehicleManager:#(threading.Thread):
 
     def add_vehicle(self, direction):
         vehicle = Vehicle(str(len(self.vehicleList)), self.speed, direction)
+        # Notify all other vehicles of new vehicle.
+        vehicle.set_other_vehicles(self.vehicleList)
+        for v in self.vehicleList:
+          v.inform_of_another_vehicle(v)
+
         self.vehicleList.append(vehicle)
         self.layer.add_vehicle(vehicle)
         self.layer.create_speed_label(vehicle=vehicle)

@@ -128,6 +128,8 @@ class Vehicle():
         random_road = random.choice([0, 1, 2, 4, 5, 6]) #"Bridge" is road 3 and no one can start there
         self.buffered_requests = []
         self.is_on_bridge = False
+        self.acknowledgements = {}
+
         self.current_road = random_road
         self.timestamp = None
         self.index = index
@@ -178,9 +180,14 @@ class Vehicle():
 
     def set_other_vehicles(self, other_vehicles):
       self.other_vehicles = []
-      for f in other_vehicles:
-        if self != f:
-          self.other_vehicles.append(f)
+      for v in other_vehicles:
+        self.inform_of_another_vehicle(v)
+
+
+    def inform_of_another_vehicle(self, v):
+      if self != v:
+        self.other_vehicles.append(v)
+        self.acknowledgements[v] = False
 
 
     def create_timestamp(self):

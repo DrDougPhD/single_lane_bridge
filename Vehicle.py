@@ -15,7 +15,7 @@ def duration(src, dst, speed):
 
 # Precondition: The process which called this is waiting for the token to
 #  enter the critical section.
-def get_movement_path(starting_point, speed):
+def get_movement_path(starting_point, vehicle):
   """When a process is given the token for entry on the bridge, it will
   be permitted to cross the bridge and drive through the town."""
 
@@ -24,9 +24,10 @@ def get_movement_path(starting_point, speed):
     #  It is assumed the car is currently at RoadPoints.W
     #  W -> E -> NE -> SE -> E
     return (
-      MoveTo(RoadPoints.E, duration(starting_point, RoadPoints.E, speed)) + \
+      MoveTo(RoadPoints.E, duration(starting_point, RoadPoints.E, vehicle.speed)) + \
       #Rotate() + \
-      get_town_travel_path(RoadPoints.E, speed)
+      CallFunc(vehicle.leave_bridge) + \
+      get_town_travel_path(RoadPoints.E, vehicle.speed)
     )
 
   elif starting_point == RoadPoints.E:
@@ -34,9 +35,10 @@ def get_movement_path(starting_point, speed):
     #  It is assumed the car is currently at RoadPoints.W
     #  E -> W -> SW -> NW -> W
     return (
-      MoveTo(RoadPoints.W, duration(starting_point, RoadPoints.W, speed)) + \
+      MoveTo(RoadPoints.W, duration(starting_point, RoadPoints.W, vehicle.speed)) + \
       #Rotate() + \
-      get_town_travel_path(RoadPoints.W, speed)
+      CallFunc(vehicle.leave_bridge) + \
+      get_town_travel_path(RoadPoints.W, vehicle.speed)
     )
 
 
@@ -120,9 +122,10 @@ class Vehicle():
         print("Initializing vehicle " + str(index) + "...")
 
         random_road = random.choice([0, 1, 2, 4, 5, 6]) #"Bridge" is road 3 and no one can start there
-
+        self.buffered_requests = []
+        self.is_on_bridge = False
         self.current_road = random_road
-        self.timestamp = -1
+        self.timestamp = None
         self.index = index
         self.speed = speed
         self.direction = direction
@@ -164,7 +167,7 @@ class Vehicle():
 
 
     def begin(self):
-      drive_path = get_town_travel_path(self.road_map[self.current_road][0], self.speed)
+      drive_path = get_town_travel_path(self.road_map[self.current_road][0], self)
       request_bridge_access = CallFunc(self.request_access_to_bridge)
       self.sprite.do(drive_path + request_bridge_access) 
 
@@ -183,6 +186,7 @@ class Vehicle():
     def request_access_to_bridge(self):
       # Record the time and reset the acknowledgement tracker.
       now = time.time()
+      self.timestamp = now
       print("{0} is requesting bridge access".format(self.index))
       self.acknowledgements = {v:False for v in self.other_vehicles}
 
@@ -203,11 +207,34 @@ class Vehicle():
       # If we are already on the bridge, then buffer this request until we
       #  have exited the bridge.
       print("{0} received request from {1}".format(self.index, requester.index))
-      print("{0} sends ack to {1}".format(self.index, requester.index))
-      requester.acknowledge(self, t)
-   
+      
+      if self.is_on_bridge:
+        print("{0} buffering request from {1}".format(self.index, requester.index))
+        self.buffered_requests.append(requester)
+
+      else:
+        has_not_requested_access = (self.timestamp is None)
+        timestamp_is_newer = (self.timestamp > t)
+        has_higher_ID_and_timestamps_equal = (self.index > requester.index and self.timestamp == t)
+
+        print(has_not_requested_access)
+        print(timestamp_is_newer)
+        print(has_higher_ID_and_timestamps_equal)
+        if (has_not_requested_access
+            or timestamp_is_newer
+            or has_higher_ID_and_timestamps_equal):
+          print("{0} sends ack to {1}".format(self.index, requester.index))
+	  requester.acknowledge(self)
+
     
-    def acknowledge(self, other, t):
+    def leave_bridge(self):
+      self.is_on_bridge = False
+      while self.buffered_requests:
+        v = self.buffered_requests.pop(0)
+        v.acknowledge(self)
+
+
+    def acknowledge(self, other):
       # This car is granted an acknowledgement to its request from the
       #  grantingVehicle
       print("{0} received ack from {1}".format(self.index, other.index))
@@ -218,7 +245,9 @@ class Vehicle():
    
     
     def cross_bridge(self):
-      drive_path = get_movement_path(self.sprite.position, self.speed)
+      self.timestamp = None
+      self.is_on_bridge = True
+      drive_path = get_movement_path(self.sprite.position, self)
       request_bridge_access = CallFunc(self.request_access_to_bridge)
       self.sprite.do(drive_path + request_bridge_access)
 

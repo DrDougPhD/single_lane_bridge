@@ -198,7 +198,7 @@ class UI:
             elif keyp == key.F1: #Add new vehicle
                 if len(self.vehManage.vehicleList) < 10:
                     print("Adding new car...")
-                    self.vehManage.add_vehicle("left")
+                    self.vehManage.add_vehicle()
 
             elif keyp == key.SPACE:
                 print("Pausing?")

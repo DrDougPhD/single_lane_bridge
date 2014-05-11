@@ -172,11 +172,14 @@ class UI:
                   if index < len(self.vehManage.vehicleList):
                     new_speed = self.vehManage.vehicleList[index].speed\
                               + (10 * self._modifier)
-                    print("Modifying vehicle speed by {0}".format(new_speed))
-                    self.vehManage.vehicleList[index].speed = new_speed
-                    self.vehManage.layer.redraw_speed(
-                      vehicle=self.vehManage.vehicleList[index]
-                    )
+                    if new_speed > 0:
+                      print("Modifying vehicle speed by {0}".format(new_speed))
+                      self.vehManage.vehicleList[index].speed = new_speed
+                      self.vehManage.layer.redraw_speed(
+                        vehicle=self.vehManage.vehicleList[index]
+                      )
+                    else:
+                      print("Speed cannot be 0 or less!")
 
                   else:
                     print("Please select 0 through {0}".format(

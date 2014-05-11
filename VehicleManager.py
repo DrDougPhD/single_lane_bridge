@@ -12,10 +12,10 @@ import operator
 import time
 
 class Bridge_Mode():
-    One_at_a_Time = -1
+    One_at_a_Time = 0
     One_direction = 1
 
-class VehicleManager:#(threading.Thread):
+class VehicleManager:
     def __init__(self, numVehicles, speed, directions, mode):
         #threading.Thread.__init__(self)
         self.stopEvent = threading.Event()
@@ -55,35 +55,4 @@ class VehicleManager:#(threading.Thread):
       print("Starting!!!!!")
       for v in self.vehicleList:
         v.begin()
-
-
-    def run(self):
-        self.running = True
-
-        timeStampList = []
-        while self.running:
-            if self.stopEvent.isSet(): #Look for exit event to be set
-                self.exit()
-
-            for vehicle in self.vehicleList:
-                if vehicle.status != Car_Status.Waiting:
-                    vehicle.move()
-                    vehicle.check_for_bridge()
-                else:
-                    print("Vehicle " + str(vehicle.index) + " waiting!")
-
-                if vehicle.timestamp != -1:
-                    timeStampList.append([vehicle, vehicle.timestamp])
-                    vehicle.timestamp = -1
-
-            if len(timeStampList) > 0:
-                #timeStampList.sort(key=operator.itemgetter(2)) #Sort by timestamp / 2nd column
-                print("Oldest timestamp: " + str(timeStampList[0][1]) + " from vehicle " + str(timeStampList[0][0].index))
-
-            time.sleep(0.5) #Arbitrary
-
-    def stop(self):  #This may not even be needed...
-        self.stopEvent.set()
-        self.running = False
-
 

@@ -136,7 +136,7 @@ class UI:
             self.vehManage = vehicleManage
 
         def on_close(self):
-            self.vehManage.stop()
+            sys.exit(0)
 
 
         def number_key_pressed(self, keyp):
@@ -200,11 +200,10 @@ class UI:
                     print("Adding new car...")
                     self.vehManage.add_vehicle("left")
 
-            elif keyp == key.SPACE: #Switch bridge modes
-                self.vehManage.bridge_mode = ~self.vehManage.bridge_mode + 1 #Complement + 1
+            elif keyp == key.SPACE:
+                print("Pausing?")
 
             elif keyp == key.ESCAPE: #Exit application gracefully
-                self.vehManage.stop()
                 print("Goodbye!")
                 sys.exit(384) #;D
 

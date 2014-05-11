@@ -5,31 +5,28 @@
 #Spring 2014
 
 from Vehicle import *
+from BridgeMode import BridgeMode
 import random
 import sys
 import threading
 import operator
 import time
-
-class Bridge_Mode():
-    One_at_a_Time = 0
-    One_direction = 1
-
 class VehicleManager:
-    def __init__(self, numVehicles, speed, directions, mode):
-        #threading.Thread.__init__(self)
-        self.stopEvent = threading.Event()
+    def __init__(self, numVehicles, speed, mode):
         self.speed = speed
         self.vehicleList = []
         self.layer = None
-        self.bridge_mode = mode
+        self.vehicle_class = getVehicleClassByMode(mode)
         self.running = False
         self.tick = 0.5
 
         for i in range(numVehicles):
-            vehicle = Vehicle(str(i), speed, directions[i])
+            vehicle = self.vehicle_class(
+              index=i,
+              speed=speed,
+            )
             self.vehicleList.append(vehicle)
-            print("Vehicle " + str(i) + " added!")
+            print("Vehicle {0} added!".format(vehicle))
 
         for i in self.vehicleList:
             i.set_other_vehicles(self.vehicleList)
@@ -41,8 +38,11 @@ class VehicleManager:
         for vehicle in self.vehicleList:
             vehicle.set_speed(speed)
 
-    def add_vehicle(self, direction):
-        vehicle = Vehicle(str(len(self.vehicleList)), self.speed, direction)
+    def add_vehicle(self):
+        vehicle = self.vehicle_class(
+          index=len(self.vehicleList),
+          speed=self.speed
+        )
         self.vehicleList.append(vehicle)
         vehicle.set_other_vehicles(self.vehicleList)
 

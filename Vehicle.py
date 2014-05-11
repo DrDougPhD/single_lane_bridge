@@ -9,6 +9,7 @@ from cocos.actions import MoveTo, RotateTo
 from UI import RoadPoints
 from cocos.actions import CallFunc
 import math
+from BridgeMode import BridgeMode
 
 def duration(src, dst, speed):
   x1, y1 = src
@@ -115,15 +116,16 @@ def get_town_travel_path(starting_point, speed):
     )
 
 
-class Car_Status(): #You can totally tell I am a C# developer... can't you?
-    Moving = 0      # That's how I would have done it :P
-    Waiting = 1
-    Warning = 2
-    On_Bridge = 3
+def getVehicleClassByMode(mode):
+  if mode == BridgeMode.One_at_a_Time:
+    return VehicleOneAtATime
+  if mode == BridgeMode.One_direction:
+    return VehicleOneDirection
 
-class Vehicle():
-    def __init__(self, index, speed, direction):
-        print("Initializing vehicle " + str(index) + "...")
+
+class VehicleOneAtATime:
+    def __init__(self, index, speed):
+        print("Initializing vehicle {0}...".format(index))
         
         # "Bridge" is road 3 and no one can start there
         random_road = random.choice([0, 1, 2, 4, 5, 6])
@@ -136,18 +138,15 @@ class Vehicle():
         self.current_road = random_road
         self.index = index
         self.speed = random.choice([100, 200, 150, 60, 50]) #speed
-        self.direction = direction
-        self.status = Car_Status.Moving
         self.position = 0
-        self.road_map = RoadPoints.ROADMAP
         self.label = None
         self.sprite = cocos.sprite.Sprite(
           'car2.png',
           scale=0.10,
           color=[random.randrange(0, 255) for i in range(3)]
         ) #Pick a random color
-        self.sprite.position = self.road_map[self.current_road][0]
-        print("Vehicle " + str(index) + " initialized!")
+        self.sprite.position = RoadPoints.ROADMAP[self.current_road][0]
+        print("Vehicle {0} initialized!".format(index))
 
 
     def set_other_vehicles(self, other_vehicles):
@@ -159,7 +158,143 @@ class Vehicle():
 
     def begin(self):
       print(self.other_vehicles)
-      drive_path = get_town_travel_path(self.road_map[self.current_road][0], self.speed)
+      drive_path = get_town_travel_path(RoadPoints.ROADMAP[self.current_road][0], self.speed)
+      request_bridge_access = CallFunc(self.request_access_to_bridge)
+      self.sprite.do(drive_path + request_bridge_access) 
+
+
+    def __repr__(self):
+      return str(self)
+
+
+    def __str__(self):
+      return "{0}".format(self.index)
+
+
+    def request_access_to_bridge(self):
+      # Record the time and reset the acknowledgement tracker.
+      now = time.time()
+      self.timestamp = now
+      print("{0} is requesting bridge access".format(self.index))
+      self.acknowledgements = {v:False for v in self.other_vehicles if v.index != self.index}
+
+      # As per Ricart & Agrawala's algorithm, broadcast a timestamped request
+      # to all other vehicles.
+      for c in self.other_vehicles:
+        if (c.index != self.index):
+          print("{0} sent request to {1}".format(self.index, c.index))
+          c.request(self, now)
+
+
+    def request(self, requester, t):
+      # As per Ricart & Agrawala's algorithm, the requester has broadcast a
+      #  timestamped request to all vehicles. This vehicle has received the
+      #  request and checks if it needs access to the bridge. Return an 
+      #  acknowledgement if:
+      #    1. This vehicle does not need access to the bridge
+      #    2. This vehicle's request occurred later than the other vehicle
+      # If we are already on the bridge, then buffer this request until we
+      #  have exited the bridge.
+      print("{0} received request from {1}".format(self.index, requester.index))
+      
+      if self.is_on_bridge:
+        print("{0} buffering request from {1}".format(self.index, requester.index))
+        self.buffered_requests.append(requester)
+
+      else:
+        # This car is not on the bridge. However, it could still have a
+        #  request that is newer than the received request.
+        timestamp_is_newer = (self.timestamp > t)
+        has_higher_ID_and_timestamps_equal = (
+          self.index > requester.index and
+          self.timestamp == t
+        )
+        # If there is no pending request, or if the pending request is
+        #  newer than the sent one, or if they are equal and the sender
+        #  has a lower ID, then grant them their acknowledgment.
+        if (self.timestamp is None or
+            timestamp_is_newer or
+            has_higher_ID_and_timestamps_equal):
+          print("{0} sends ack to {1}".format(self.index, requester.index))
+          requester.acknowledge(self)
+
+        else:
+          print("{0} buffering request from {1}".format(self.index, requester.index))
+          self.buffered_requests.append(requester)
+
+
+    def leave_bridge(self):
+      print("{0} releases token to {1} pending requests".format(
+        self.index,
+        len(self.buffered_requests)
+      ))
+      self.is_on_bridge = False
+      while self.buffered_requests:
+        v = self.buffered_requests.pop(0)
+        v.acknowledge(self)
+
+
+    def acknowledge(self, other):
+      # This car is granted an acknowledgement to its request from the
+      #  grantingVehicle
+      print("{0} received ack from {1}".format(self.index, other.index))
+      self.acknowledgements[other] = True
+      for v in self.acknowledgements:
+        print("{0} checking for acknowledgement for {1}: {2}".format(
+          self.index,
+          v.index,
+          self.acknowledgements[v]
+        ))
+
+      if all(self.acknowledgements.values()):
+        print("All acks received! Crossing bridge.")
+        self.cross_bridge()
+
+
+    def cross_bridge(self):
+      self.timestamp = None
+      self.is_on_bridge = True
+      drive_path = get_movement_path(self.sprite.position, self)
+      request_bridge_access = CallFunc(self.request_access_to_bridge)
+      self.sprite.do(drive_path + request_bridge_access)
+
+
+class VehicleOneDirection:
+    def __init__(self, index, speed):
+        print("Initializing vehicle {0}...".format(index))
+        
+        # "Bridge" is road 3 and no one can start there
+        random_road = random.choice([0, 1, 2, 4, 5, 6])
+        self.buffered_requests = []
+        self.is_on_bridge = False
+        self.acknowledgements = {}
+        self.other_vehicles = []
+        self.timestamp = None
+
+        self.current_road = random_road
+        self.index = index
+        self.speed = random.choice([100, 200, 150, 60, 50]) #speed
+        self.position = 0
+        self.label = None
+        self.sprite = cocos.sprite.Sprite(
+          'car2.png',
+          scale=0.10,
+          color=[random.randrange(0, 255) for i in range(3)]
+        ) #Pick a random color
+        self.sprite.position = RoadPoints.ROADMAP[self.current_road][0]
+        print("Vehicle {0} initialized!".format(index))
+
+
+    def set_other_vehicles(self, other_vehicles):
+      # By referencing the original list, any modification to it will
+      #  immediately be reflected in the local list. That's just how
+      #  Python lists work.
+      self.other_vehicles = other_vehicles
+
+
+    def begin(self):
+      print(self.other_vehicles)
+      drive_path = get_town_travel_path(RoadPoints.ROADMAP[self.current_road][0], self.speed)
       request_bridge_access = CallFunc(self.request_access_to_bridge)
       self.sprite.do(drive_path + request_bridge_access) 
 

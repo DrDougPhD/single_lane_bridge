@@ -118,8 +118,11 @@ def get_town_travel_path(starting_point, speed):
 
 def getVehicleClassByMode(mode):
   if mode == BridgeMode.One_at_a_Time:
+    print("Bridge crossing mode: only one vehicle will have access at a time")
     return VehicleOneAtATime
+
   if mode == BridgeMode.One_direction:
+    print("Bridge crossing mode: all vehicles in one direction will have access")
     return VehicleOneDirection
 
 
@@ -270,8 +273,21 @@ class VehicleOneDirection:
         self.acknowledgements = {}
         self.other_vehicles = []
         self.timestamp = None
-
         self.current_road = random_road
+
+        # Upon initialization, self.bridge_entry_point must be set to the
+        #  bridge entry point that is immediately behind the vehicle. This
+        #  is required so that this value can be simply flipped when the
+        #  vehicle approaches the bridge again.
+        current_point = RoadPoints.ROADMAP[self.current_road][1]
+        if any(current_point == P for P in [RoadPoints.W, RoadPoints.SW, RoadPoints.NW]):
+          self.bridge_entry_point = RoadPoints.E
+
+        else:
+          self.bridge_entry_point = RoadPoints.W
+
+        print("self.bridge_entry_point := {0}".format(self.bridge_entry_point))
+
         self.index = index
         self.speed = random.choice([100, 200, 150, 60, 50]) #speed
         self.position = 0
@@ -313,16 +329,19 @@ class VehicleOneDirection:
       self.timestamp = now
       print("{0} is requesting bridge access".format(self.index))
       self.acknowledgements = {v:False for v in self.other_vehicles if v.index != self.index}
+      print("{0} bridge entry is {1}".format(self, self.bridge_entry_point))
+      self.flip_entry_point()
+      print("{0} bridge entry is updated to {1}".format(self, self.bridge_entry_point))
 
       # As per Ricart & Agrawala's algorithm, broadcast a timestamped request
       # to all other vehicles.
       for c in self.other_vehicles:
         if (c.index != self.index):
           print("{0} sent request to {1}".format(self.index, c.index))
-          c.request(self, now)
+          c.request(requester=self, t=now, bridge_entry=self.bridge_entry_point)
 
 
-    def request(self, requester, t):
+    def request(self, requester, t, bridge_entry):
       # As per Ricart & Agrawala's algorithm, the requester has broadcast a
       #  timestamped request to all vehicles. This vehicle has received the
       #  request and checks if it needs access to the bridge. Return an 
@@ -331,11 +350,40 @@ class VehicleOneDirection:
       #    2. This vehicle's request occurred later than the other vehicle
       # If we are already on the bridge, then buffer this request until we
       #  have exited the bridge.
+      # 
+      # Requires:
+      #  self.bridge_entry_point is the point at which the current vehicle
+      #   entered the bridge. This does not change until the vehicle
+      #   enters the bridge again from the other side.
+      #
+      #  self.same_direction_head
+      #   self.same_direction_head needs to be set only if bridge access occurs
+      #   self.same_direction_head needs to be unset when this vehicle leaves
+      #   the bridge.
       print("{0} received request from {1}".format(self.index, requester.index))
-      
+      print("{0} came from {1}".format(self, self.bridge_entry_point))
+      print("{0} is at {1}".format(requester, bridge_entry))
+      if self.bridge_entry_point == bridge_entry or (self.timestamp is None and self.is_on_bridge != True):
+              print("{0} will ack {1}".format(self, requester))
+              requester.acknowledge(self)
+      else:
+              print("{0} buffers request from {1}".format(self, requester))
+              self.buffered_requests.append(requester)
+      """
       if self.is_on_bridge:
-        print("{0} buffering request from {1}".format(self.index, requester.index))
-        self.buffered_requests.append(requester)
+        if self.bridge_entry_point == bridge_entry:
+          # This vehicle is on the bridge, and the requesting vehicle is
+          #  requesting to travel the bridge in the same direction. Thus, this
+          #  vehicle should grant access to the bridge.
+          requester.same_direction_ack(
+            acknowledger=self,
+            head=self.same_direction_head
+          )
+          self.same_direction_tail = requester
+
+        else:
+          print("{0} buffering request from {1}".format(self.index, requester.index))
+          self.buffered_requests.append(requester)
 
       else:
         # This car is not on the bridge. However, it could still have a
@@ -357,6 +405,13 @@ class VehicleOneDirection:
         else:
           print("{0} buffering request from {1}".format(self.index, requester.index))
           self.buffered_requests.append(requester)
+      """
+
+
+    def same_direction_ack(acknowledger, head):
+      self.same_direction_head = head
+      self.same_direction_tail = self
+      self.acknowledge(other=acknowledger)
 
 
     def leave_bridge(self):
@@ -387,7 +442,21 @@ class VehicleOneDirection:
         self.cross_bridge()
 
 
+    def flip_entry_point(self):
+      if self.bridge_entry_point == RoadPoints.W:
+        self.bridge_entry_point = RoadPoints.E
+
+      else:
+        self.bridge_entry_point = RoadPoints.W
+
+
     def cross_bridge(self):
+      # Requires:
+      #  self.bridge_entry_point should be equal to the bridge entry point
+      #    that is on the other side of the bridge (e.g. if we are heading
+      #    west, and are at the Eastern entrance, then self.bridge_entry_point
+      #    should be equal to RoadPoints.W)
+      #self.flip_entry_point()
       self.timestamp = None
       self.is_on_bridge = True
       drive_path = get_movement_path(self.sprite.position, self)

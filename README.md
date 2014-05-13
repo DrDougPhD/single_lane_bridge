@@ -27,6 +27,31 @@ Installation
 ============
 
 This program requires Python 2.6+ or Python 3.3+ for the language. In addition, it requires the libraries pyglet and cocos2d.
+It is best to use Python 2, as the libraries that permit execution under Python 3 are still in alpha stage, and installation
+is not very easy.
+
+
+Installing Python 3 on a Debian-based Linux machine
+---------------------------------------------------
+
+To install Python on a Debian-based Linux machine, use the apt-get program.
+
+    $ sudo apt-get install python
+
+
+Installing Cocos2D on a Debian-based Linux machine
+--------------------------------------------------
+
+This GUI is controlled by the Cocos2D gaming engine, which is easily installed by using the pip Python library installer.
+First, you must install pip on your machine.
+
+    $ sudo apt-get install python-pip
+
+With pip installed, you may now download cocos2D.
+
+    $ sudo pip install cocos2d==0.5.0
+
+With this installed, you are ready to begin running the script.
 
 
 Running

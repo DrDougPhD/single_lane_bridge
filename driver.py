@@ -73,24 +73,21 @@ random.seed(time.time())
 DEFAULT_SPEED_CHOICES = [50, 100, 150, 250, 400]
 DEFAULT_NUM_VEHICLES = 5
 
+
 def main():
     director.init(caption="CS 384 Project")
+
+    # Retrieve command-line arguments
     bridgeMode = int(sys.argv[1])
     speeds = get_speeds(sys.argv)
-    numVehicles = len(speeds)
 
-
-    vehManage = VehicleManager(
-      numVehicles=2,
-      speed=100,
-      mode=bridgeMode
-    )
-    layer = UI.Layer(vehManage)
+    manager = VehicleManager(speeds=speeds, mode=bridgeMode)
+    layer = UI.Layer(manager)
     print("Setting layer object...")
-    vehManage.layer = layer
-    layer.create_speed_label(vehManage=vehManage)
-    layer.create_vehicle_label(vehManage=vehManage)
-    eventHandler = UI.Event_Handler(vehManage)
+    manager.layer = layer
+    layer.create_speed_label(vehManage=manager)
+    layer.create_vehicle_label(vehManage=manager)
+    eventHandler = UI.Event_Handler(manager)
 
     color_layer = cocos.layer.ColorLayer(0,104,10, 0)
     print("Starting scene...")

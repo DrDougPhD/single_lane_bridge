@@ -207,17 +207,19 @@ class VehicleOneAtATime:
       else:
         # This car is not on the bridge. However, it could still have a
         #  request that is newer than the received request.
-        timestamp_is_newer = (self.timestamp > t)
-        has_higher_ID_and_timestamps_equal = (
-          self.index > requester.index and
-          self.timestamp == t
-        )
+        #
         # If there is no pending request, or if the pending request is
         #  newer than the sent one, or if they are equal and the sender
         #  has a lower ID, then grant them their acknowledgment.
-        if (self.timestamp is None or
-            timestamp_is_newer or
-            has_higher_ID_and_timestamps_equal):
+        if (
+          # Vehicle has not made a request
+          (self.timestamp is None) or 
+          # This vechile has a newer timestamp, thus lower priority
+          (self.timestamp > t) or 
+          # The timestamps are equal, in which case the car with the smaller
+          #  index has higher priority.
+          (self.index > requester.index and self.timestamp == t)
+         ): 
           print("{0} sends ack to {1}".format(self.index, requester.index))
           requester.acknowledge(self)
 

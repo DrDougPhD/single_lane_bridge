@@ -1,19 +1,19 @@
-#UI.py
+# UI.py
+#  Draw the on-screen elements, forward keyboard events, and customize labels
+#  when modified.
 #
-#Written by Madeline Cameron and Doug McGeehan
-#CS 384 - Distributed Operating Systems
-#Spring 2014
+# Written by Madeline Cameron and Doug McGeehan
+# CS 384 - Distributed Operating Systems
+# Spring 2014
 
 
 import cocos
-from VehicleManager import *
 from cocos.director import director
 from cocos.draw import Line
-from cocos.scene import Scene
 from pyglet.window import key
 import sys
-
 from RoadPoints import RoadPoints
+
 
 class UI:
     class Canvas(cocos.draw.Canvas):
@@ -29,6 +29,7 @@ class UI:
                 self.move_to(start)
                 self.line_to(end)
             print("Road map drawn!")
+
 
     class Layer(cocos.layer.Layer):
         def __init__(self, vehicleManager):
@@ -109,12 +110,17 @@ class UI:
             self.add(vehicle.sprite)
             print("Vehicle {0} added!".format(vehicle))
 
+
     class Event_Handler(cocos.layer.Layer):
+        # Cocos2D requires this static variable to be set for whichever
+        #  class handles human input.
         is_event_handler = True
+
         def __init__(self, vehicleManage):
             super(UI.Event_Handler, self).__init__()
             self._modifier = None
             self.vehManage = vehicleManage
+
 
         def on_close(self):
             sys.exit(0)
@@ -148,7 +154,8 @@ class UI:
                 self._modifier = -1
 
             elif self.number_key_pressed(keyp):
-                index = self.get_number_key_pressed(keyp) #Get vehicleList index
+                # Retrieve the number pressed on the keyboard
+                index = self.get_number_key_pressed(keyp)
                 if self._modifier is not None:
                   if index < len(self.vehManage.vehicleList):
                     new_speed = self.vehManage.vehicleList[index].speed\
@@ -168,13 +175,13 @@ class UI:
                     ))
 
                 else:
-                    print("Please use a modifier before attempting to modify speed!")
+                    print("Press - or + to indicate which speed modifier to"
+                          " use beforee attempting to modify speed!")
 
-            elif keyp == key.ENTER: #Begin / stop simulation
+            elif keyp == key.ENTER: #Begin the simulation
                 print("Starting simulation...")
                 self.vehManage.start()
-                #for vehicle in self.vehManage.vehicleList:
-                #    vehicle.move()
+
 
             elif keyp == key.F1: #Add new vehicle
                 if len(self.vehManage.vehicleList) < 10:
@@ -187,7 +194,4 @@ class UI:
             elif keyp == key.ESCAPE: #Exit application gracefully
                 print("Goodbye!")
                 sys.exit(384) #;D
-
-            else:
-                print("KEY PRESSED: {0}".format(keyp))
 

@@ -11,7 +11,7 @@ import math
 from cocos.actions import MoveTo
 from cocos.actions import RotateTo
 from cocos.actions import CallFunc
-from UI import RoadPoints
+from RoadPoints import RoadPoints
 from BridgeMode import BridgeMode
 
 

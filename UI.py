@@ -48,7 +48,7 @@ class UI:
 
             print("Adding vehicles...")
             for vehicle in vehicleManager.vehicleList:
-                self.add(vehicle.sprite)
+                self.add(vehicle)
                 print("Vehicle {0} added!".format(vehicle))
 
             print("Layer created!")
@@ -85,29 +85,8 @@ class UI:
 
                 vehicle.speed_label = speedText
 
-        def create_vehicle_label(self, vehicle=None, vehManage=None):
-            to_create_list = []
-            if vehManage is not None:
-                for vehicle in vehManage.vehicleList:
-                    to_create_list.append(vehicle)
-            else:
-                to_create_list.append(vehicle)
-
-            for vehicle in to_create_list:
-                index = self._vehManage.vehicleList.index(vehicle)
-                vehicleLabel = cocos.text.Label(
-                  str(index),
-                  position=(
-                    vehicle.sprite.position[0] + 10,
-                    vehicle.sprite.position[1] + 10
-                  ),
-                  color=self.label_color
-                )
-                vehicle.label = vehicleLabel
-                self.add(vehicleLabel)
-
         def add_vehicle(self, vehicle):
-            self.add(vehicle.sprite)
+            self.add(vehicle)
             print("Vehicle {0} added!".format(vehicle))
 
 

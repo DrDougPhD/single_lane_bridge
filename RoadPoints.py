@@ -1,3 +1,9 @@
+# RoadPoints.py
+#  Specify the verticles that exist on the map between the two cities.
+#
+# Written by Madeline Cameron and Doug McGeehan
+# CS 384 - Distributed Operating Systems
+# Spring 2014
 
 class RoadPoints:
   SW = 100, 100
@@ -9,6 +15,8 @@ class RoadPoints:
   W = 200, 250
   E = 400, 250
 
+  # This list is used to draw the roads, showing which vertices
+  # are connected to each other.
   ROADMAP = [
     [W, NW],
     [NW, SW],
@@ -19,7 +27,5 @@ class RoadPoints:
     [NE, E],
   ]
 
+  # This list is used to randomly select one point for initialization.
   POINTS = [SW, NW, SE, NE, W, E]
-
-
-

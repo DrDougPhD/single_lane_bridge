@@ -4,13 +4,7 @@
 #CS 384 - Distributed Operating Systems
 #Spring 2014
 
-from Vehicle import *
-from BridgeMode import BridgeMode
-import random
-import sys
-import threading
-import operator
-import time
+from Vehicle import getVehicleClassByMode
 class VehicleManager:
     def __init__(self, numVehicles, speed, mode):
         self.speed = speed

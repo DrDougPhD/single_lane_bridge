@@ -27,6 +27,5 @@ Keyboard Controls
 ------------------------
 F1 = Add new vehicle
 Numpad + or - = Change speed modifier to positive or negative
-Numpad 1 to 9 = Change speed of vehicle 1 or 2 or, etc. (After a speed modifier is chosen)
+Numpad 0 to 9 = Change speed of vehicle 1 or 2 or, etc. (After a speed modifier is chosen)
 Enter = Start / Stop simulation
-Space = Change simulation mode (One at a time or One direction)

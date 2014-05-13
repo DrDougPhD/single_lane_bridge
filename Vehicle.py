@@ -1,8 +1,8 @@
-#Vehicle.py
+# Vehicle.py
 #
-#Written by Madeline Cameron and Doug McGeehan
-#CS 384 - Distributed Operating Systems
-#Spring 2014
+# Written by Madeline Cameron and Doug McGeehan
+# CS 384 - Distributed Operating Systems
+# Spring 2014
 
 import random
 import cocos
@@ -133,11 +133,13 @@ def getVehicleClassByMode(mode):
 
 
 # Abstract base class
-class Vehicle:
+class Vehicle(cocos.layer.Layer):
+
   # Static ID so that each vehicle has a unique ID.
   ID = 0
 
   def __init__(self, speed):
+    super(Vehicle, self).__init__()
     self.index = Vehicle.ID
     print("Initializing vehicle {0}...".format(self.index))
         
@@ -151,13 +153,21 @@ class Vehicle:
     self.other_vehicles = []
 
     self.initial_point = random.choice(RoadPoints.POINTS)
-    self.label = None
-    self.sprite = cocos.sprite.Sprite(
+    self.position = self.initial_point
+
+    # Create the car sprite.
+    self.add(cocos.sprite.Sprite(
       'car2.png',
       scale=0.10,
       color=[random.randrange(0, 255) for i in range(3)]
-    ) #Pick a random color
-    self.sprite.position = self.initial_point
+    ))
+
+    # Create the car label that will travel with the car.
+    self.add(cocos.text.Label(
+      str(self.index),
+      position=(0, 10),
+      color=(255, 255, 255, 255)
+    ))
 
     print("Vehicle {0} initialized!".format(self.index))
 
@@ -184,7 +194,7 @@ class Vehicle:
       self.speed
     )
     request_bridge_access = CallFunc(self.request_access_to_bridge)
-    self.sprite.do(drive_path + request_bridge_access) 
+    self.do(drive_path + request_bridge_access) 
 
 
   def request_access_to_bridge(self):
@@ -234,9 +244,9 @@ class Vehicle:
   def cross_bridge(self):
     self.timestamp = None
     self.is_on_bridge = True
-    drive_path = get_movement_path(self.sprite.position, self)
+    drive_path = get_movement_path(self.position, self)
     request_bridge_access = CallFunc(self.request_access_to_bridge)
-    self.sprite.do(drive_path + request_bridge_access)
+    self.do(drive_path + request_bridge_access)
 
 
 class VehicleOneAtATime(Vehicle):

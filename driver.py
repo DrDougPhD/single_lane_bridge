@@ -86,7 +86,6 @@ def main():
     print("Setting layer object...")
     manager.layer = layer
     layer.create_speed_label(vehManage=manager)
-    layer.create_vehicle_label(vehManage=manager)
     eventHandler = UI.Event_Handler(manager)
 
     color_layer = cocos.layer.ColorLayer(0,104,10, 0)

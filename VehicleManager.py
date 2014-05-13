@@ -48,7 +48,6 @@ class VehicleManager:
 
           self.layer.add_vehicle(vehicle)
           self.layer.create_speed_label(vehicle=vehicle)
-          self.layer.create_vehicle_label(vehicle=vehicle)
 
 
     def start(self):

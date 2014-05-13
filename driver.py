@@ -7,7 +7,8 @@
 
 import sys
 from BridgeMode import BridgeMode
-
+from settings import DEFAULT_NUM_VEHICLES
+from settings import DEFAULT_SPEED_CHOICES
 
 # If this script is executed as a command-line script, then let's test to
 #  verify that valid parameters have been passed in before doing any
@@ -71,10 +72,6 @@ from cocos.scene import Scene
 import random
 import time
 random.seed(time.time())
-
-
-DEFAULT_SPEED_CHOICES = [50, 100, 150, 250, 400]
-DEFAULT_NUM_VEHICLES = 5
 
 
 def main():

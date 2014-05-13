@@ -5,6 +5,9 @@
 #Spring 2014
 
 from Vehicle import getVehicleClassByMode
+from settings import DEFAULT_SPEED_CHOICES
+import random
+
 class VehicleManager:
     def __init__(self, speeds, mode):
         self.vehicleList = []
@@ -22,7 +25,7 @@ class VehicleManager:
     
     def add_vehicle(self):
         vehicle = self.vehicle_class(
-          speed=self.speed
+          speed=random.choice(DEFAULT_SPEED_CHOICES)
         )
         self.vehicleList.append(vehicle)
         vehicle.set_other_vehicles(self.vehicleList)

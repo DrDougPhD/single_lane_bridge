@@ -23,9 +23,55 @@ By far, the people of the islands are more intelligent than their politicians. T
 2. No person can be indefinitely prevented from crossing the bridge (no live-lock)
 3. Assume all vehicular clocks are synchronized
 
+Installation
+============
+
+This program requires Python 2.6+ or Python 3.3+ for the language. In addition, it requires the libraries pyglet and cocos2d.
+
+
+Running
+=======
+
+The driver.py script is responsible for starting the GUI. To execute this program, you must call driver.py with a number of command-line parameters:
+
+    $ python driver.py BRIDGE_CROSSING_MODE [speed0 [speed1 [...]]]
+
+  BRIDGE_CROSSING_MODE can be one of the following:
+    0 -- Single vehicle crossing at a time
+    1 -- Multiple vehicle crossing if vehicles are traveling in
+          same direction and are traveling at the same or lower
+          speed of the first vehicle.
+
+  speed0-9 indicates the custom initial speed of the vehicles you wish to 
+   add.
+   You have three options to choose from regarding the custom speed
+   parameters:
+
+   1.  If you specify no speed parameters, then five vehicles will be
+       instantiated with speeds randomly chosen from 50, 100, 150, 250,
+       and 400.
+   2.  If you specify one speed parameter, then five vehicles will be
+       instantiated with the speed you specified.
+   3.  By specifying more than 2 speeds, then the number of speed parameters
+       that you supply will correspond to the number of vehicles instantiated.
+       Each speed will then be assigned to the appropriate vehicle (speed0 to
+       vehicle 0, speed1 to vehicle 1, etc).
+
+
 Keyboard Controls
 ------------------------
-F1 = Add new vehicle
+F1 = Add new vehicle (only before starting simulation)
 Numpad + or - = Change speed modifier to positive or negative
 Numpad 0 to 9 = Change speed of vehicle 1 or 2 or, etc. (After a speed modifier is chosen)
-Enter = Start / Stop simulation
+Enter = Start simulation
+ESC   = Stop simulation and exit program
+
+
+Changing speed during simulation
+--------------------------------
+
+Due to the complexity of the underlying gaming framework, Cocos2D, it is
+ difficult to allow the speeds to be immediately changed while vehicles are in
+ motion. If you change the speed of a vehicle, then this speed will not alter
+ the traveling speed of the vehicle until it enters the bridge.
+

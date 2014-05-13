@@ -11,7 +11,7 @@ from BridgeMode import BridgeMode
 #  time consuming import.s
 if __name__ == "__main__":
   usage = """
- $ python {0} BRIDGE_CROSSING_MODE
+ $ python {0} BRIDGE_CROSSING_MODE [speed1 [speed2 [...]]]
 
 BRIDGE_CROSSING_MODE can be one of the following:
   0 -- Single vehicle crossing at a time
@@ -19,19 +19,43 @@ BRIDGE_CROSSING_MODE can be one of the following:
         same direction and are traveling at the same or lower
         speed of the first vehicle.
 
+speed1-10 indicates the custom initial speed of the vehicles you wish to add.
+  The speed must be greater than 0. The number of speed parameters supplied
+  as input indicates the number of vehicles you wish to add.
+  By default, only five vehicles will be added, with speeds randomly selected
+  between the speeds 50, 100, 150, 250, and 400.
   """.format(sys.argv[0])
 
+  # Verify the user has supplied enough command-line arguments
   if len(sys.argv) < 2:
-    print("Not enough arguments. Please specify the bridge-crossing mode.")
+    print("ERROR: Not enough arguments.")
     print(usage)
     sys.exit(1)
 
+  # Verify the user has supplied a valid BridgeMode parameter.
   if int(sys.argv[1]) not in BridgeMode():
-    print("Incorrect parameter for BRIDGE_CROSSING_MODE := {0}".format(
+    print("ERROR: Incorrect parameter for BRIDGE_CROSSING_MODE := {0}".format(
       sys.argv[1]
     ))
     print(usage)
     sys.exit(2)
+
+  # If the user has supplied custom speeds, verify they are valid speeds.
+  if len(sys.argv) > 2:
+    speeds = sys.argv[2:]
+    for raw_speed in speeds:
+
+      # Verify the parameter is a positive integer.
+      try:
+        speed = int(raw_speed)
+        if speed <= 0:
+          raise ValueError
+
+      except ValueError:
+        print("USER ERROR: {0} is not a valid speed.".format(raw_speed))
+        print(usage)
+        sys.exit(3)
+
 
 # If the execution has made it this far, then the user has supplied valid
 #  inputs. We may now spend time performing the necessary imports.
@@ -40,12 +64,21 @@ from VehicleManager import VehicleManager
 from UI import UI
 import cocos
 from cocos.director import director
-from threading import Thread
 from cocos.scene import Scene
+import random
+import time
+random.seed(time.time())
+
+
+DEFAULT_SPEED_CHOICES = [50, 100, 150, 250, 400]
+DEFAULT_NUM_VEHICLES = 5
 
 def main():
     director.init(caption="CS 384 Project")
     bridgeMode = int(sys.argv[1])
+    speeds = get_speeds(sys.argv)
+    numVehicles = len(speeds)
+
 
     vehManage = VehicleManager(
       numVehicles=2,
@@ -63,8 +96,25 @@ def main():
     print("Starting scene...")
     scene = Scene(eventHandler, color_layer, layer)
     print("Running scene...")
-    UIThread = Thread(group=None, target=director.run(scene))
-    UIThread.start()
+    director.run(scene)
+
+
+def get_speeds(argv):
+  user_has_specified_custom_speed = (len(argv) > 2)
+  if user_has_specified_custom_speed:
+    raw_speeds = argv[2:]
+    if len(raw_speeds) == 1:
+      speeds = [int(raw_speeds[0]) for i in range(DEFAULT_NUM_VEHICLES)]
+
+    else:
+      speeds = [int(s) for s in raw_speeds]
+      
+  else:
+    speeds = [
+      random.choice(DEFAULT_SPEED_CHOICES) for i in range(DEFAULT_NUM_VEHICLES)
+    ]
+
+  return speeds
 
 
 if __name__ == "__main__":

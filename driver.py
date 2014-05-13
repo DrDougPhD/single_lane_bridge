@@ -1,11 +1,14 @@
-#UI.py
+# driver.py - Driver of the bridge crossing software. Execute this script to
+#  run everything else.
 #
-#Written by Madeline Cameron and Doug McGeehan
-#CS 384 - Distributed Operating Systems
-#Spring 2014
+# Written by Madeline Cameron and Doug McGeehan
+# CS 384 - Distributed Operating Systems
+# Spring 2014
 
 import sys
 from BridgeMode import BridgeMode
+
+
 # If this script is executed as a command-line script, then let's test to
 #  verify that valid parameters have been passed in before doing any
 #  time consuming import.s

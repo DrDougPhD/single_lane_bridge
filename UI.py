@@ -34,6 +34,9 @@ class RoadPoints:
         [NE, E],
     ]
 
+    POINTS = [SW, NW, SE, NE, W, E]
+
+
 class UI:
     class Canvas(cocos.draw.Canvas):
         def render(self):

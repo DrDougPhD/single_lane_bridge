@@ -4,13 +4,19 @@
 #CS 384 - Distributed Operating Systems
 #Spring 2014
 
-import random, cocos, time, math, threading
-from cocos.actions import MoveTo, RotateTo
-from UI import RoadPoints
-from cocos.actions import CallFunc
+import random
+import cocos
+import time
 import math
+from cocos.actions import MoveTo
+from cocos.actions import RotateTo
+from cocos.actions import CallFunc
+from UI import RoadPoints
 from BridgeMode import BridgeMode
 
+
+# Given two points and the speed at which to travel between these points,
+#  return the time required for travel.
 def duration(src, dst, speed):
   x1, y1 = src
   x2, y2 = dst
@@ -125,30 +131,33 @@ def getVehicleClassByMode(mode):
     print("Bridge crossing mode: all vehicles in one direction will have access")
     return VehicleOneDirection
 
+
 # Abstract base class
 class Vehicle:
   def __init__(self, index, speed):
     print("Initializing vehicle {0}...".format(index))
         
+    self.index = index
+    self.speed = speed
+
     # "Bridge" is road 3 and no one can start there
     random_road = random.choice([0, 1, 2, 4, 5, 6])
-    self.buffered_requests = []
+
     self.is_on_bridge = False
+    self.timestamp = None
+    self.buffered_requests = []
     self.acknowledgements = {}
     self.other_vehicles = []
-    self.timestamp = None
 
-    self.current_road = random_road
-    self.index = index
-    self.speed = random.choice([100, 200, 150, 60, 50]) #speed
-    self.position = 0
+    self.initial_point = random.choice(RoadPoints.POINTS)
     self.label = None
     self.sprite = cocos.sprite.Sprite(
       'car2.png',
       scale=0.10,
       color=[random.randrange(0, 255) for i in range(3)]
     ) #Pick a random color
-    self.sprite.position = RoadPoints.ROADMAP[self.current_road][0]
+    self.sprite.position = self.initial_point
+
     print("Vehicle {0} initialized!".format(index))
 
 
@@ -170,7 +179,7 @@ class Vehicle:
   def begin(self):
     print(self.other_vehicles)
     drive_path = get_town_travel_path(
-      RoadPoints.ROADMAP[self.current_road][0],
+      self.initial_point,
       self.speed
     )
     request_bridge_access = CallFunc(self.request_access_to_bridge)
@@ -279,8 +288,7 @@ class VehicleOneDirection(Vehicle):
     #  bridge entry point that is immediately behind the vehicle. This
     #  is required so that this value can be simply flipped when the
     #  vehicle approaches the bridge again.
-    current_point = RoadPoints.ROADMAP[self.current_road][1]
-    if any(current_point == P for P in [RoadPoints.W, RoadPoints.SW, RoadPoints.NW]):
+    if any(self.initial_point == P for P in [RoadPoints.W, RoadPoints.SW, RoadPoints.NW]):
       self.bridge_entry_point = RoadPoints.E
 
     else:

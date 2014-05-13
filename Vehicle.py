@@ -134,14 +134,15 @@ def getVehicleClassByMode(mode):
 
 # Abstract base class
 class Vehicle:
-  def __init__(self, index, speed):
-    print("Initializing vehicle {0}...".format(index))
-        
-    self.index = index
-    self.speed = speed
+  # Static ID so that each vehicle has a unique ID.
+  ID = 0
 
-    # "Bridge" is road 3 and no one can start there
-    random_road = random.choice([0, 1, 2, 4, 5, 6])
+  def __init__(self, speed):
+    self.index = Vehicle.ID
+    print("Initializing vehicle {0}...".format(self.index))
+        
+    Vehicle.ID += 1
+    self.speed = speed
 
     self.is_on_bridge = False
     self.timestamp = None
@@ -158,7 +159,7 @@ class Vehicle:
     ) #Pick a random color
     self.sprite.position = self.initial_point
 
-    print("Vehicle {0} initialized!".format(index))
+    print("Vehicle {0} initialized!".format(self.index))
 
 
   def __repr__(self):
@@ -188,8 +189,7 @@ class Vehicle:
 
   def request_access_to_bridge(self):
     # Record the time and reset the acknowledgement tracker.
-    now = time.time()
-    self.timestamp = now
+    self.timestamp = time.time()
     print("{0} is requesting bridge access".format(self.index))
     self.acknowledgements = {
       v:False for v in self.other_vehicles if v.index != self.index
@@ -200,7 +200,7 @@ class Vehicle:
     for c in self.other_vehicles:
       if (c.index != self.index):
         print("{0} sent request to {1}".format(self.index, c.index))
-        c.request(self, now)
+        c.request(self)
 
 
   def leave_bridge(self):
@@ -241,7 +241,8 @@ class Vehicle:
 
 class VehicleOneAtATime(Vehicle):
 
-  def request(self, requester, t):
+  def request(self, requester):
+    t = requester.timestamp
     # As per Ricart & Agrawala's algorithm, the requester has broadcast a
     #  timestamped request to all vehicles. This vehicle has received the
     #  request and checks if it needs access to the bridge. Return an 
@@ -281,8 +282,8 @@ class VehicleOneAtATime(Vehicle):
 
 
 class VehicleOneDirection(Vehicle):
-  def __init__(self, index, speed):
-    Vehicle.__init__(self, index, speed)
+  def __init__(self, speed):
+    Vehicle.__init__(self, speed)
       
     # Upon initialization, self.bridge_entry_point must be set to the
     #  bridge entry point that is immediately behind the vehicle. This
@@ -302,7 +303,7 @@ class VehicleOneDirection(Vehicle):
     Vehicle.request_access_to_bridge(self)
 
 
-  def request(self, requester, t, bridge_entry):
+  def request(self, requester):
     # As per Ricart & Agrawala's algorithm, the requester has broadcast a
     #  timestamped request to all vehicles. This vehicle has received the
     #  request and checks if it needs access to the bridge. Return an 
@@ -316,6 +317,8 @@ class VehicleOneDirection(Vehicle):
     #  self.bridge_entry_point is the point at which the current vehicle
     #   entered the bridge. This does not change until the vehicle
     #   enters the bridge again from the other side.
+    t = requester.timestamp
+    bridge_entry = requester.bridge_entry_point
     print("{0} received request from {1}".format(self.index, requester.index))
     print("{0} came from {1}".format(self, self.bridge_entry_point))
     print("{0} is at {1}".format(requester, bridge_entry))

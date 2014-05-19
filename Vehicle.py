@@ -35,10 +35,10 @@ def get_movement_path(starting_point, vehicle):
     #  It is assumed the car is currently at RoadPoints.W
     #  W -> E -> NE -> SE -> E
     return (
+      CallFunc(vehicle.rotate_E) + \
       MoveTo(RoadPoints.E, duration(starting_point, RoadPoints.E, vehicle.speed)) + \
-      #Rotate() + \
       CallFunc(vehicle.leave_bridge) + \
-      get_town_travel_path(RoadPoints.E, vehicle.speed)
+      get_town_travel_path(RoadPoints.E, vehicle)
     )
 
   elif starting_point == RoadPoints.E:
@@ -46,14 +46,14 @@ def get_movement_path(starting_point, vehicle):
     #  It is assumed the car is currently at RoadPoints.W
     #  E -> W -> SW -> NW -> W
     return (
+      CallFunc(vehicle.rotate_W) + \
       MoveTo(RoadPoints.W, duration(starting_point, RoadPoints.W, vehicle.speed)) + \
-      #Rotate() + \
       CallFunc(vehicle.leave_bridge) + \
-      get_town_travel_path(RoadPoints.W, vehicle.speed)
+      get_town_travel_path(RoadPoints.W, vehicle)
     )
 
 
-def get_town_travel_path(starting_point, speed):
+def get_town_travel_path(starting_point, vehicle):
   """When a process is given the token for entry on the bridge, it will
   be permitted to cross the bridge and drive through the town."""
 
@@ -62,12 +62,12 @@ def get_town_travel_path(starting_point, speed):
     #  It is assumed the car is currently at RoadPoints.E
     #  E -> NE -> SE -> E
     return (
-      #Rotate() + \
-      MoveTo(RoadPoints.NE, duration(RoadPoints.E, RoadPoints.NE, speed)) + \
-      #RotateTo(236, 0) + \
-      MoveTo(RoadPoints.SE, duration(RoadPoints.NE, RoadPoints.SE, speed)) + \
-      #RotateTo(90, 0) + \
-      MoveTo(RoadPoints.E, duration(RoadPoints.SE, RoadPoints.E, speed))
+      CallFunc(vehicle.rotate_NE) + \
+      MoveTo(RoadPoints.NE, duration(RoadPoints.E, RoadPoints.NE, vehicle.speed)) + \
+      CallFunc(vehicle.rotate_S) + \
+      MoveTo(RoadPoints.SE, duration(RoadPoints.NE, RoadPoints.SE, vehicle.speed)) + \
+      CallFunc(vehicle.rotate_NW) + \
+      MoveTo(RoadPoints.E, duration(RoadPoints.SE, RoadPoints.E, vehicle.speed))
     )
 
   elif starting_point == RoadPoints.NE:
@@ -75,10 +75,10 @@ def get_town_travel_path(starting_point, speed):
     #  It is assumed the car is currently at RoadPoints.E
     #  NE -> SE -> E
     return (
-      #RotateTo(90, 0) + \
-      MoveTo(RoadPoints.SE, duration(RoadPoints.NE, RoadPoints.SE, speed)) + \
-      #RotateTo(-56, 0) + \
-      MoveTo(RoadPoints.E, duration(RoadPoints.SE, RoadPoints.E, speed))
+      CallFunc(vehicle.rotate_S) + \
+      MoveTo(RoadPoints.SE, duration(RoadPoints.NE, RoadPoints.SE, vehicle.speed)) + \
+      CallFunc(vehicle.rotate_NW) + \
+      MoveTo(RoadPoints.E, duration(RoadPoints.SE, RoadPoints.E, vehicle.speed))
     )
 
   elif starting_point == RoadPoints.SE:
@@ -86,8 +86,8 @@ def get_town_travel_path(starting_point, speed):
     #  It is assumed the car is currently at RoadPoints.E
     #  SE -> E
     return (
-      #RotateTo(-56, 0) + \
-      MoveTo(RoadPoints.E, duration(RoadPoints.SE, RoadPoints.E, speed))
+      CallFunc(vehicle.rotate_NW) + \
+      MoveTo(RoadPoints.E, duration(RoadPoints.SE, RoadPoints.E, vehicle.speed))
     )
 
   elif starting_point == RoadPoints.W:
@@ -95,30 +95,30 @@ def get_town_travel_path(starting_point, speed):
     #  It is assumed the car is currently at RoadPoints.W
     #  W -> SW -> NW -> W
     return (
-      #RotateTo(-236, 0) + \
-      MoveTo(RoadPoints.SW, duration(RoadPoints.W, RoadPoints.SW, speed)) + \
-      #RotateTo(-90, 0) + \
-      MoveTo(RoadPoints.NW, duration(RoadPoints.SW, RoadPoints.NW, speed)) + \
-      #RotateTo(56, 0) + \
-      MoveTo(RoadPoints.W, duration(RoadPoints.NW, RoadPoints.W, speed))
+      CallFunc(vehicle.rotate_SW) + \
+      MoveTo(RoadPoints.SW, duration(RoadPoints.W, RoadPoints.SW, vehicle.speed)) + \
+      CallFunc(vehicle.rotate_N) + \
+      MoveTo(RoadPoints.NW, duration(RoadPoints.SW, RoadPoints.NW, vehicle.speed)) + \
+      CallFunc(vehicle.rotate_SE) + \
+      MoveTo(RoadPoints.W, duration(RoadPoints.NW, RoadPoints.W, vehicle.speed))
     )
 
   elif starting_point == RoadPoints.SW:
     # Travel the Western Town.
     #  SW -> NW -> W
     return (
-      #RotateTo(-90, 0) + \
-      MoveTo(RoadPoints.NW, duration(RoadPoints.SW, RoadPoints.NW, speed)) + \
-      #RotateTo(56, 0) + \
-      MoveTo(RoadPoints.W, duration(RoadPoints.NW, RoadPoints.W, speed))
+      CallFunc(vehicle.rotate_N) + \
+      MoveTo(RoadPoints.NW, duration(RoadPoints.SW, RoadPoints.NW, vehicle.speed)) + \
+      CallFunc(vehicle.rotate_SE) + \
+      MoveTo(RoadPoints.W, duration(RoadPoints.NW, RoadPoints.W, vehicle.speed))
     )
 
   elif starting_point == RoadPoints.NW:
     # Travel the Western Town.
     #  NW -> W
     return (
-      #RotateTo(56, 0) + \
-      MoveTo(RoadPoints.W, duration(RoadPoints.NW, RoadPoints.W, speed))
+      CallFunc(vehicle.rotate_SE) + \
+      MoveTo(RoadPoints.W, duration(RoadPoints.NW, RoadPoints.W, vehicle.speed))
     )
 
 
@@ -155,26 +155,26 @@ class Vehicle(cocos.layer.Layer):
     self.initial_point = random.choice(RoadPoints.POINTS)
     self.position = self.initial_point
 
-    sprite = cocos.sprite.Sprite(
+    self.sprite = cocos.sprite.Sprite(
       'car2.png',
       scale=0.10,
       color=[random.randrange(0, 255) for i in range(3)]
     )
     # Create the car sprite.
-    self.add(sprite)
+    self.add(self.sprite)
 
-    if self.initial_point == RoadPoints.SW: #SW
-        sprite.do(RotateTo(-90, 0))
-    if self.initial_point == RoadPoints.SE: #SE
-        sprite.do(RotateTo(-90, 0))
-    if self.initial_point == RoadPoints.NW: #NW
-        sprite.do(RotateTo(56, 0))
-    if self.initial_point == RoadPoints.NE: #NE
-        sprite.do(RotateTo(236, 0))
+    if self.initial_point == RoadPoints.SW: 
+        self.sprite.do(RotateTo(-90, 0))
+    if self.initial_point == RoadPoints.NE: 
+        self.sprite.do(RotateTo(90, 0))
+    if self.initial_point == RoadPoints.NW: 
+        self.sprite.do(RotateTo(56, 0))
+    if self.initial_point == RoadPoints.SE: 
+        self.sprite.do(RotateTo(236, 0))
     if self.initial_point == RoadPoints.W:
-        sprite.do(RotateTo(-236, 0))
+        self.sprite.do(RotateTo(-236, 0))
     if self.initial_point == RoadPoints.E:
-        sprite.do(RotateTo(-56, 0))
+        self.sprite.do(RotateTo(-56, 0))
 
     # Create the car label that will travel with the car.
     self.add(cocos.text.Label(
@@ -205,7 +205,7 @@ class Vehicle(cocos.layer.Layer):
     print(self.other_vehicles)
     drive_path = get_town_travel_path(
       self.initial_point,
-      self.speed
+      self
     )
     request_bridge_access = CallFunc(self.request_access_to_bridge)
     self.do(drive_path + request_bridge_access)
@@ -261,6 +261,54 @@ class Vehicle(cocos.layer.Layer):
     drive_path = get_movement_path(self.position, self)
     request_bridge_access = CallFunc(self.request_access_to_bridge)
     self.do(drive_path + request_bridge_access)
+
+
+  def rotate(self, angle):
+    self.sprite.do(RotateTo(angle, 0))
+
+
+  def rotate_SW(self):
+    # This should be called if the vehicle is exiting the bridge from
+    #  the western point.
+    self.rotate(-236)
+
+
+  def rotate_N(self):
+    # This should be called if the vehicle is at the SW point.
+    self.rotate(-90)
+
+
+  def rotate_SE(self):
+    # This should be called if the vehicle is at the NW point.
+    self.rotate(56)
+
+
+  def rotate_E(self):
+    # This should be called if the vehicle is entering the bridge at the
+    #  western entrace.
+    self.rotate(0)
+
+
+  def rotate_NE(self):
+    # This should be called if the vehicle is exiting the bridge from the
+    #  eastern point.
+    self.rotate(-56)
+
+
+  def rotate_S(self):
+    # This should be called if the vehicle is at the NE point.
+    self.rotate(90)
+
+
+  def rotate_NW(self):
+    # This should be called if the vehicle is at the SE point.
+    self.rotate(236)
+
+
+  def rotate_W(self):
+    # This should be called if the vehicle is entering the bridge at the
+    #  eastern entrance.
+    self.rotate(180)
 
 
 class VehicleOneAtATime(Vehicle):

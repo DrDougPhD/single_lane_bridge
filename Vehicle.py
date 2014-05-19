@@ -183,14 +183,16 @@ class Vehicle(cocos.layer.Layer):
       color=(255, 255, 255, 255)
     ))
 
-    print("Vehicle {0} initialized!".format(self.index))
+    print("Vehicle {0} initialized!".format(self))
 
 
   def __repr__(self):
+    # Create a string representation of this vehicle for standard output.
     return str(self)
 
 
   def __str__(self):
+    # Create a string representation of this vehicle for standard output.
     return "{0}".format(self.index)
 
 
@@ -202,7 +204,8 @@ class Vehicle(cocos.layer.Layer):
 
 
   def begin(self):
-    print(self.other_vehicles)
+    # Upon initialization, this function is called to set the
+    #  vehicles motion based on where it was initialized.
     drive_path = get_town_travel_path(
       self.initial_point,
       self
@@ -212,6 +215,10 @@ class Vehicle(cocos.layer.Layer):
 
 
   def request_access_to_bridge(self):
+    # Precondition: this vehicle is at one of the entrances to the bridge.
+    #  This vehicle will call this function when it requests access to the
+    #  bridge, following the Ricart & Agrawala algorithm
+
     # Record the time and reset the acknowledgement tracker.
     self.timestamp = time.time()
     print("{0} is requesting bridge access".format(self.index))
@@ -228,6 +235,8 @@ class Vehicle(cocos.layer.Layer):
 
 
   def leave_bridge(self):
+    # This function is called immediately once the vehicle leaves the bridge
+    #  by crossing one of the exit points.
     print("{0} releases token to {1} pending requests".format(
       self.index,
       len(self.buffered_requests)
@@ -240,7 +249,11 @@ class Vehicle(cocos.layer.Layer):
 
   def acknowledge(self, other):
     # This car is granted an acknowledgement to its request from the
-    #  grantingVehicle
+    #  grantingVehicle. As per the Ricart & Agrawala algorithm, it must
+    #  check to see if all acknowledgements have been received.
+    #
+    # If all acknowledgements have been received, then it is granted
+    #  access to the bridge.
     print("{0} received ack from {1}".format(self.index, other.index))
     self.acknowledgements[other] = True
     for v in self.acknowledgements:
@@ -256,6 +269,14 @@ class Vehicle(cocos.layer.Layer):
 
 
   def cross_bridge(self):
+    # Precondition: no vehicle is on the bridge that will cause a fatal head-on
+    #  collision (derived classes of this Vehicle base class may permit
+    #  multiple vehicles to access the bridge based on non-conflicting
+    #  criteria, such as traveling the same direction).
+    #
+    #  This vehicle may now drive across the bridge, travel through the town
+    #  and then re-request access to the bridge once it has arrived at the
+    #  entrance again.
     self.timestamp = None
     self.is_on_bridge = True
     drive_path = get_movement_path(self.position, self)
@@ -264,6 +285,7 @@ class Vehicle(cocos.layer.Layer):
 
 
   def rotate(self, angle):
+    # Rotate the vehicle to the angle specified.
     self.sprite.do(RotateTo(angle, 0))
 
 
@@ -312,6 +334,10 @@ class Vehicle(cocos.layer.Layer):
 
 
 class VehicleOneAtATime(Vehicle):
+  # This class only permits one vehicle to access the bridge at any time, where
+  #  access is granted based on timestamped (and in case of ties, lower ID)
+  #  priority.
+
 
   def request(self, requester):
     t = requester.timestamp
@@ -349,11 +375,20 @@ class VehicleOneAtATime(Vehicle):
         requester.acknowledge(self)
 
       else:
+        # This vehicle is either on the bridge, or it has higher priority over
+        #  bridge access than the requester. The request will be buffered
+        #  until this vehicle has crossed the bridge.
         print("{0} buffering request from {1}".format(self.index, requester.index))
         self.buffered_requests.append(requester)
 
 
 class VehicleOneDirection(Vehicle):
+  # This class permits multiple vehicles to travel across the bridge
+  #  at a time assuming they are traveling in the same direction. If a vehicle
+  #  is already on the bridge, and a request from the other side is made, then
+  #  no other vehicles will be granted access until the vehicle from the other
+  #  side is granted access. This prevents livelock from occurrying.
+
   def __init__(self, speed):
     Vehicle.__init__(self, speed)
 
@@ -371,6 +406,8 @@ class VehicleOneDirection(Vehicle):
 
 
   def request_access_to_bridge(self):
+    # Precondition: this vehicle is at an entrance to the bridge, and its
+    #  self.bridge_entry_point is set to the other entrance of the bridge.
     self.flip_entry_point()
     Vehicle.request_access_to_bridge(self)
 

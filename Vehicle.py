@@ -64,9 +64,9 @@ def get_town_travel_path(starting_point, speed):
     return (
       #Rotate() + \
       MoveTo(RoadPoints.NE, duration(RoadPoints.E, RoadPoints.NE, speed)) + \
-      #Rotate() + \
+      #RotateTo(236, 0) + \
       MoveTo(RoadPoints.SE, duration(RoadPoints.NE, RoadPoints.SE, speed)) + \
-      #Rotate() + \
+      #RotateTo(90, 0) + \
       MoveTo(RoadPoints.E, duration(RoadPoints.SE, RoadPoints.E, speed))
     )
 
@@ -75,9 +75,9 @@ def get_town_travel_path(starting_point, speed):
     #  It is assumed the car is currently at RoadPoints.E
     #  NE -> SE -> E
     return (
-      #Rotate() + \
+      #RotateTo(90, 0) + \
       MoveTo(RoadPoints.SE, duration(RoadPoints.NE, RoadPoints.SE, speed)) + \
-      #Rotate() + \
+      #RotateTo(-56, 0) + \
       MoveTo(RoadPoints.E, duration(RoadPoints.SE, RoadPoints.E, speed))
     )
 
@@ -86,7 +86,7 @@ def get_town_travel_path(starting_point, speed):
     #  It is assumed the car is currently at RoadPoints.E
     #  SE -> E
     return (
-      #Rotate() + \
+      #RotateTo(-56, 0) + \
       MoveTo(RoadPoints.E, duration(RoadPoints.SE, RoadPoints.E, speed))
     )
 
@@ -95,11 +95,11 @@ def get_town_travel_path(starting_point, speed):
     #  It is assumed the car is currently at RoadPoints.W
     #  W -> SW -> NW -> W
     return (
-      #Rotate() + \
+      #RotateTo(-236, 0) + \
       MoveTo(RoadPoints.SW, duration(RoadPoints.W, RoadPoints.SW, speed)) + \
-      #Rotate() + \
+      #RotateTo(-90, 0) + \
       MoveTo(RoadPoints.NW, duration(RoadPoints.SW, RoadPoints.NW, speed)) + \
-      #Rotate() + \
+      #RotateTo(56, 0) + \
       MoveTo(RoadPoints.W, duration(RoadPoints.NW, RoadPoints.W, speed))
     )
 
@@ -107,9 +107,9 @@ def get_town_travel_path(starting_point, speed):
     # Travel the Western Town.
     #  SW -> NW -> W
     return (
-      #Rotate() + \
+      #RotateTo(-90, 0) + \
       MoveTo(RoadPoints.NW, duration(RoadPoints.SW, RoadPoints.NW, speed)) + \
-      #Rotate() + \
+      #RotateTo(56, 0) + \
       MoveTo(RoadPoints.W, duration(RoadPoints.NW, RoadPoints.W, speed))
     )
 
@@ -117,7 +117,7 @@ def get_town_travel_path(starting_point, speed):
     # Travel the Western Town.
     #  NW -> W
     return (
-      #Rotate() + \
+      #RotateTo(56, 0) + \
       MoveTo(RoadPoints.W, duration(RoadPoints.NW, RoadPoints.W, speed))
     )
 
@@ -142,7 +142,7 @@ class Vehicle(cocos.layer.Layer):
     super(Vehicle, self).__init__()
     self.index = Vehicle.ID
     print("Initializing vehicle {0}...".format(self.index))
-        
+
     Vehicle.ID += 1
     self.speed = speed
 
@@ -155,12 +155,26 @@ class Vehicle(cocos.layer.Layer):
     self.initial_point = random.choice(RoadPoints.POINTS)
     self.position = self.initial_point
 
-    # Create the car sprite.
-    self.add(cocos.sprite.Sprite(
+    sprite = cocos.sprite.Sprite(
       'car2.png',
       scale=0.10,
       color=[random.randrange(0, 255) for i in range(3)]
-    ))
+    )
+    # Create the car sprite.
+    self.add(sprite)
+
+    if self.initial_point == RoadPoints.SW: #SW
+        sprite.do(RotateTo(-90, 0))
+    if self.initial_point == RoadPoints.SE: #SE
+        sprite.do(RotateTo(-90, 0))
+    if self.initial_point == RoadPoints.NW: #NW
+        sprite.do(RotateTo(56, 0))
+    if self.initial_point == RoadPoints.NE: #NE
+        sprite.do(RotateTo(236, 0))
+    if self.initial_point == RoadPoints.W:
+        sprite.do(RotateTo(-236, 0))
+    if self.initial_point == RoadPoints.E:
+        sprite.do(RotateTo(-56, 0))
 
     # Create the car label that will travel with the car.
     self.add(cocos.text.Label(
@@ -194,7 +208,7 @@ class Vehicle(cocos.layer.Layer):
       self.speed
     )
     request_bridge_access = CallFunc(self.request_access_to_bridge)
-    self.do(drive_path + request_bridge_access) 
+    self.do(drive_path + request_bridge_access)
 
 
   def request_access_to_bridge(self):
@@ -255,14 +269,14 @@ class VehicleOneAtATime(Vehicle):
     t = requester.timestamp
     # As per Ricart & Agrawala's algorithm, the requester has broadcast a
     #  timestamped request to all vehicles. This vehicle has received the
-    #  request and checks if it needs access to the bridge. Return an 
+    #  request and checks if it needs access to the bridge. Return an
     #  acknowledgement if:
     #    1. This vehicle does not need access to the bridge
     #    2. This vehicle's request occurred later than the other vehicle
     # If we are already on the bridge, then buffer this request until we
     #  have exited the bridge.
     print("{0} received request from {1}".format(self.index, requester.index))
-      
+
     if self.is_on_bridge:
       print("{0} buffering request from {1}".format(self.index, requester.index))
       self.buffered_requests.append(requester)
@@ -276,13 +290,13 @@ class VehicleOneAtATime(Vehicle):
       #  has a lower ID, then grant them their acknowledgment.
       if (
         # Vehicle has not made a request
-        (self.timestamp is None) or 
+        (self.timestamp is None) or
         # This vechile has a newer timestamp, thus lower priority
-        (self.timestamp > t) or 
+        (self.timestamp > t) or
         # The timestamps are equal, in which case the car with the smaller
         #  index has higher priority.
         (self.index > requester.index and self.timestamp == t)
-      ): 
+      ):
         print("{0} sends ack to {1}".format(self.index, requester.index))
         requester.acknowledge(self)
 
@@ -294,7 +308,7 @@ class VehicleOneAtATime(Vehicle):
 class VehicleOneDirection(Vehicle):
   def __init__(self, speed):
     Vehicle.__init__(self, speed)
-      
+
     # Upon initialization, self.bridge_entry_point must be set to the
     #  bridge entry point that is immediately behind the vehicle. This
     #  is required so that this value can be simply flipped when the
@@ -316,13 +330,13 @@ class VehicleOneDirection(Vehicle):
   def request(self, requester):
     # As per Ricart & Agrawala's algorithm, the requester has broadcast a
     #  timestamped request to all vehicles. This vehicle has received the
-    #  request and checks if it needs access to the bridge. Return an 
+    #  request and checks if it needs access to the bridge. Return an
     #  acknowledgement if:
     #    1. This vehicle does not need access to the bridge
     #    2. This vehicle's request occurred later than the other vehicle
     # If we are already on the bridge, then buffer this request until we
     #  have exited the bridge.
-    # 
+    #
     # Requires:
     #  self.bridge_entry_point is the point at which the current vehicle
     #   entered the bridge. This does not change until the vehicle

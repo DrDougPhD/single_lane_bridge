@@ -1,5 +1,5 @@
 # RoadPoints.py
-#  Specify the verticles that exist on the map between the two cities.
+#  Specify the vehicles that exist on the map between the two cities.
 #
 # Written by Madeline Cameron and Doug McGeehan
 # CS 384 - Distributed Operating Systems

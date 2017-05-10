@@ -85,11 +85,12 @@ The driver.py script is responsible for starting the GUI. To execute this progra
 
 Keyboard Controls
 ------------------------
-F1 = Add new vehicle (only before starting simulation)
-Numpad + or - = Change speed modifier to positive or negative
-Numpad 0 to 9 = Change speed of vehicle 1 or 2 or, etc. (After a speed modifier is chosen)
-Enter = Start simulation
-ESC   = Stop simulation and exit program
+
+    F1 = Add new vehicle (only before starting simulation)  
+    Numpad + or - = Change speed modifier to positive or negative  
+    Numpad 0 to 9 = Change speed of vehicle 1 or 2 or, etc. (After a speed modifier is chosen)  
+    Enter = Start simulation  
+    ESC   = Stop simulation and exit program  
 
 
 Changing speed during simulation
